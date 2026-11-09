@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Files DAVE makes while you work
+*.ics
+!checkpoints/**/*.ics
+events.md
+
+# Editors and OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+
+# Offline bundle: vendored pi packages (rebuilt by scripts/make-offline-bundle.sh)
+vendor/

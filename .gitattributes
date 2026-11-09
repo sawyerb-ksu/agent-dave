@@ -1,0 +1,6 @@
+# Shell scripts must keep LF line endings to run on Linux and macOS.
+*.sh text eol=lf
+# Calendar files must keep their CRLF line endings (RFC 5545). Store them byte for byte.
+*.ics -text
+# PowerShell scripts keep CRLF so Windows PowerShell reads them reliably.
+*.ps1 text eol=crlf

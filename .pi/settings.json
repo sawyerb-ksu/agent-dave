@@ -1,0 +1,5 @@
+{
+  "defaultProvider": "aistudio",
+  "defaultModel": "qwen3.8:27b-q8_0",
+  "defaultThinkingLevel": "low"
+}

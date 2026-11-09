@@ -1,0 +1,201 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DAVE's safety interlock (guard.ts)",
+  "description": "Rules that .pi/extensions/guard.ts checks before every tool call. Gives VS Code autocomplete and hover help for .pi/guard.jsonc.",
+  "allowTrailingCommas": true,
+  "type": "object",
+  "additionalProperties": false,
+  "definitions": {
+    "mode": {
+      "enum": [
+        "allow",
+        "ask",
+        "never",
+        "check"
+      ],
+      "markdownEnumDescriptions": [
+        "Run it without asking.",
+        "Ask you first: Yes once, Yes for the rest of this session, or No.",
+        "Block it. You can't approve it from pi.",
+        "Send it to the judge model, which answers allow, ask or never. Needs `judge.url`."
+      ]
+    },
+    "words": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      ]
+    }
+  },
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "dial": {
+      "description": "What happens when no rule matches.",
+      "enum": [
+        "ask-before-everything",
+        "ask-before-changes",
+        "ask-before-anything-leaves",
+        "just-do-it"
+      ],
+      "markdownEnumDescriptions": [
+        "Ask before every tool call, even reading a file.",
+        "Ask before shell commands, file edits and MCP tools that aren't read-only.",
+        "Only the rules decide. Recommended.",
+        "\"ask\" rules are skipped. \"never\" rules still block."
+      ]
+    },
+    "rules": {
+      "description": "A \"never\" rule always wins. Otherwise rules are checked top to bottom and the first match decides.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "mode"
+        ],
+        "oneOf": [
+          {
+            "required": [
+              "command"
+            ]
+          },
+          {
+            "required": [
+              "file"
+            ]
+          },
+          {
+            "required": [
+              "tool"
+            ]
+          }
+        ],
+        "properties": {
+          "command": {
+            "$ref": "#/definitions/words",
+            "markdownDescription": "Shell commands, matched by their first word (`rm` also catches `/bin/rm` and `sudo rm`). More words must come later in the same command, in order: `git push`. `*` matches anything inside one word: `curl --data*`."
+          },
+          "file": {
+            "$ref": "#/definitions/words",
+            "markdownDescription": "A name with no `/` (`.env`, `*.pem`) matches that file or folder anywhere. A path (`notes/private`) is relative to this folder and covers everything inside it. `~/` is your home folder."
+          },
+          "access": {
+            "enum": [
+              "write",
+              "read",
+              "any"
+            ],
+            "default": "write",
+            "markdownDescription": "For `file` rules: `write` (the default) covers write and edit, `read` covers read, grep, find and ls, `any` covers both."
+          },
+          "tool": {
+            "$ref": "#/definitions/words",
+            "markdownDescription": "A tool by name, such as `bash`, `write`, or an MCP tool like `export_ics`. `*` works here too."
+          },
+          "mode": {
+            "$ref": "#/definitions/mode"
+          },
+          "why": {
+            "type": "string",
+            "markdownDescription": "Finishes the sentence \"DAVE wants to ...\" when the guard asks or blocks."
+          },
+          "exact": {
+            "type": "boolean",
+            "markdownDescription": "For `command` rules: the whole command line must be exactly this text (spaces squeezed). \"Always allow\" in the guard's question saves rules like this."
+          }
+        }
+      }
+    },
+    "outsideThisFolder": {
+      "$ref": "#/definitions/mode",
+      "description": "Writing or editing a file outside this folder."
+    },
+    "destructiveTools": {
+      "$ref": "#/definitions/mode",
+      "description": "MCP tools whose server marks them as destructive."
+    },
+    "noOneToAsk": {
+      "enum": [
+        "allow",
+        "never"
+      ],
+      "description": "What \"ask\" becomes when nobody can answer: print mode, or a crew worker."
+    },
+    "otherCommands": {
+      "$ref": "#/definitions/mode",
+      "description": "Shell commands no rule matched. Leave out to let the dial decide; \"check\" sends them to the judge."
+    },
+    "judge": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "How the decision model judges \"check\" calls. Its connection is usually set with /guard judge setup, outside the repo.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "markdownDescription": "Pins a judge for this project, winning over the connection saved by `/guard judge setup` in `~/.pi/agent/guard-judge.json`. A System One endpoint such as Ollama, e.g. `http://localhost:11434`. The guard calls `<url>/v1/systemone`."
+        },
+        "model": {
+          "type": "string",
+          "default": "clef:27b",
+          "description": "A System One model Ollama serves: clef:27b, clef-flash ..."
+        },
+        "apiKey": {
+          "type": "string",
+          "markdownDescription": "Bearer key, only if needed. `$NAME` reads an environment variable."
+        },
+        "policy": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Plain sentences the judge applies."
+        },
+        "allowAt": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.8,
+          "description": "The judge's allow counts only at this probability or higher; otherwise the guard asks you."
+        },
+        "timeoutMs": {
+          "type": "number",
+          "minimum": 100,
+          "default": 8000
+        },
+        "ifUnavailable": {
+          "enum": [
+            "allow",
+            "ask",
+            "never"
+          ],
+          "default": "ask",
+          "description": "What happens when the judge can't be reached or is too slow."
+        },
+        "maxVerdict": {
+          "enum": [
+            "ask",
+            "never"
+          ],
+          "default": "never",
+          "markdownEnumDescriptions": [
+            "The judge's `never` becomes a question for you. It can flag a call as dangerous, but you decide.",
+            "The judge's `never` blocks the call."
+          ],
+          "markdownDescription": "The strictest answer the judge may give. Applied by the guard after the judge answers, so it holds whatever the model does. Explicit `never` rules are separate and still block."
+        }
+      }
+    }
+  }
+}

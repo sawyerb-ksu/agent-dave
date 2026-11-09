@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "fetch": {
+      "description": "Reads any web page as text.",
+      "command": "uvx",
+      "args": ["mcp-server-fetch"]
+    },
+    "campus-events": {
+      "description": "K-State events, saved as .ics.",
+      "command": "node",
+      "args": ["mcp/campus-events/server.mjs"]
+    }
+  }
+}

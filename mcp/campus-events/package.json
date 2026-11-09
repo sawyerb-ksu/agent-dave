@@ -1,0 +1,24 @@
+{
+  "name": "campus-events",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MCP server for the K-State events calendar: find events and save them as .ics files.",
+  "type": "module",
+  "main": "server.mjs",
+  "bin": {
+    "campus-events": "server.mjs"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "snapshot": "node snapshot.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.0",
+    "zod": "^4.0.0"
+  },
+  "license": "MIT"
+}
