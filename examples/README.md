@@ -8,16 +8,16 @@ Three finished ID badges: **GRACE** (grant-writing helper), **LENNY** (lab-noteb
 
 To try one, open it next to the repo's `AGENTS.md` in VS Code, copy its text in, save, and start a new session. Copy DAVE's text back when you're done (or use `checkpoints/`).
 
-## demo/: backups for the live demos
+## demo/: from the live demos
 
-| File | Slide | Use it when |
+| File | Slide | What it is |
 |---|---|---|
-| `demo/doc-sync/SKILL.md` | 22, DAVE writes his own skill | DAVE's saved skill doesn't fire or misses steps. Copy the `doc-sync` folder to `.pi/skills/`, start a new session and ask *"sync my docs"*. |
-| `demo/standup.ts` | 32, DAVE upgrades himself | DAVE's extension won't load. Copy it to `.pi/extensions/`, run `/reload`, then `/standup`. |
+| `demo/doc-sync/SKILL.md` | 22, DAVE writes his own skill | The skill DAVE wrote in the demo. Copy the `doc-sync` folder to `.pi/skills/`, start a new session and ask *"sync my docs"*. |
+| `demo/standup.ts` | 32, DAVE upgrades himself | The extension DAVE wrote in the demo. Copy it to `.pi/extensions/`, run `/reload`, then `/standup`. |
 
-Both are also good models for writing your own skill or extension later.
+Both are good models for writing your own skill or extension.
 
-Slide 29b (safety interlocks) needs no backup file: it uses the guard already in `.pi/extensions/guard.ts`. If the guard doesn't ask, run `/guard test rm events.ics`: it should say ASK, decided by the delete-files rule in `.pi/guard.jsonc`. Otherwise press C on the slide for the replay.
+To see the safety interlock from slide 29b, run `/guard test rm events.ics` in pi: it should say ASK, decided by the delete-files rule in `.pi/guard.jsonc`.
 
 ## kits/: more skills to practice on
 

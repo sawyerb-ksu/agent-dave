@@ -26,7 +26,7 @@ Then ask DAVE: *"Find AI-related events on the K-State calendar for the next two
 
 If the K-State calendar doesn't answer within 10 seconds, `find_events` uses the saved snapshot in `data/snapshot.json` and says so in its note, with the date it was saved and the dates it covers. `export_ics` works the same either way.
 
-- **Refresh the snapshot** while online, ideally the week of the workshop: `npm run snapshot` (the next 31 days) or `npm run snapshot -- 14` (the next 14).
+- **Refresh the snapshot** while online: `npm run snapshot` (the next 31 days) or `npm run snapshot -- 14` (the next 14).
 - **Force offline mode** for a demo: set `CAMPUS_EVENTS_OFFLINE=1`.
 - **Use another snapshot file:** set `CAMPUS_EVENTS_SNAPSHOT` to its path.
 

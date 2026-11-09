@@ -83,13 +83,14 @@ Want it tighter? Each of these is enforced by pi, not by the model:
 `events-scout`, `repo-reporter` and `writer`. Each worker lists only the tools it needs. They run when [pi-subagents](https://pi.dev/packages/pi-subagents) is installed: `pi install npm:pi-subagents`.
 
 ### When you need a hand
+- **[ACTIVITIES.md](ACTIVITIES.md):** every hands-on activity from the workshop, step by step.
 - **[TROUBLESHOOTING.md](TROUBLESHOOTING.md):** quick fixes for setup, keys and errors.
 - **[checkpoints/](checkpoints/README.md):** the finished files for each loop, if you fall behind.
 - **[samples/](samples/):** practice inputs: messy meeting notes, prompts to try, skill ideas.
-- **[examples/](examples/README.md):** finished personas and the backups for the live demos.
+- **[examples/](examples/README.md):** finished personas and the skill and extension from the live demos.
 - **[examples/kits/](examples/kits/README.md):** three more ready-made skills with sample data and a known right answer: webpage briefing, spreadsheet check and scan renamer.
 
-No internet? campus-events falls back to a saved snapshot of the calendar on its own, and the offline bundle (built with `scripts/make-offline-bundle.sh`) carries everything else a machine needs.
+No internet? campus-events falls back to a saved snapshot of the calendar on its own, and the offline copy handed out in the room carries everything else a machine needs.
 
 ## You'll need
 
@@ -138,7 +139,7 @@ Also in `docs/`:
 
 And in `presentation-resources/`:
 
-- **beyond-the-prompt.pptx** and **beyond-the-prompt.html:** the workshop slides, with presenter notes. Open the HTML file in a browser for the interactive version.
+- **beyond-the-prompt.pptx** and **beyond-the-prompt.html:** the workshop slides. Open the HTML file in a browser for the interactive version.
 - **pi-cheat-sheet.pdf:** a one-page `pi` reference to print.
 - **ai-workshop-resources.pdf:** the resources page as a printable handout.
 

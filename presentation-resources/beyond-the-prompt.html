@@ -4,8 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@400;600;700&display=swap">
 <style>
-/* Layout: one 16:9 stage that fills the window (audience view), or a presenter console (#presenter) with
-   the current slide, next slide, notes, clock and pacing. Deliberately single dark look for a projector. */
+/* Layout: one 16:9 stage that fills the window. Deliberately single dark look for a projector. */
 :root{
   --void:#0f0a17; --panel:#1a1226; --panel2:#231936; --edge:#3a2d52;
   --ksu:#512888; --line:#b99ae6; --glow:#e6dbff; --signal:#8fe3b4; --warn:#f2c56b; --alert:#ff8f8f;
@@ -27,7 +26,6 @@ button{font:inherit; color:inherit}
 #stage{position:relative; width:min(100cqw, 177.78cqh); aspect-ratio:16/9; max-width:100%}
 #stage > .slide{border-radius:0; box-shadow:none}
 .ov{position:absolute; inset:0; z-index:20}
-#black{background:#000; z-index:30}
 #clipov{background:#000; display:grid; place-items:center; z-index:25}
 #clipov video{width:100%; height:100%; object-fit:contain}
 #clipov.rp{background:#07040d; display:block; padding:2.6cqw 3.4cqw}
@@ -45,13 +43,6 @@ button{font:inherit; color:inherit}
 .rl.file{background:#0b0712; border:1px solid rgba(185,154,230,.25); border-radius:.6cqw; padding:1cqw 1.4cqw; font-size:1.12cqw; color:#c8bce0}
 .rl.end{color:#8f82b0; text-align:center; margin-top:auto}
 @keyframes rlIn{from{opacity:0; transform:translateY(.4cqw)} to{opacity:1; transform:none}}
-#ansov{background:var(--void); z-index:21; padding:4.5cqw 6cqw; display:flex; flex-direction:column; gap:2.4cqw}
-#ansov .anstitle{font-size:3.6cqw; line-height:1.15; font-weight:600; margin:.6cqw 0 0; letter-spacing:-.01em}
-.answall{display:grid; grid-template-columns:repeat(3, 1fr); gap:1.4cqw; align-content:start}
-.card.ans{font-size:1.5cqw; line-height:1.35; padding:1.4cqw 1.6cqw}
-#cdchip{position:absolute; right:2cqw; top:2cqw; z-index:22; font:600 1.8cqw/1 var(--mono); background:rgba(26,18,38,.92); border:1px solid rgba(185,154,230,.45); color:var(--glow); padding:.9cqw 1.4cqw; border-radius:1cqw; display:flex; gap:1cqw; align-items:center}
-#cdchip .lbl{font-size:1.1cqw; color:var(--dim); text-transform:uppercase; letter-spacing:.12em}
-#cdchip.done{border-color:var(--warn); color:var(--warn); animation:pulse 1s ease-in-out infinite}
 @keyframes pulse{50%{opacity:.55}}
 #help{position:fixed; inset:0; z-index:50; display:grid; place-items:center; background:rgba(5,3,10,.82); padding:16px}
 .helpbox{background:var(--panel); border:1px solid var(--edge); border-radius:14px; padding:24px 28px; max-width:620px; width:100%; max-height:100%; overflow:auto; font-size:14px; line-height:1.5}
@@ -467,44 +458,8 @@ button{font:inherit; color:inherit}
 .ho-grid{display:grid; grid-template-columns:1.25fr .75fr; gap:3cqw; height:100%}
 .ho-grid .code{align-self:center}
 
-/* ---------- Presenter console ---------- */
-#pres{height:100%; display:flex; flex-direction:column; background:#0b0712; font-size:14px; padding-left:max(12px, env(safe-area-inset-left, 0px)); padding-right:max(12px, env(safe-area-inset-right, 0px)); padding-block:10px; gap:10px; overflow:auto}
-.p-top{display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center}
-.p-sec{display:flex; flex-direction:column; min-width:0}
-.p-sec b{font-size:16px; font-weight:600}
-.p-sec span{font-family:var(--mono); font-size:12px; color:var(--dim)}
-.p-clock{display:flex; align-items:center; gap:8px; margin-left:auto}
-.p-clock .big{font:600 26px/1 var(--mono); font-variant-numeric:tabular-nums; min-width:5.2ch; text-align:right}
-.btn{background:var(--panel2); border:1px solid var(--edge); border-radius:8px; padding:7px 12px; cursor:pointer; font-size:13px; white-space:nowrap}
-.btn:hover{border-color:var(--line)}
-.btn:disabled{opacity:.4; cursor:default}
-.btn:disabled:hover{border-color:var(--edge)}
-.btn.on{background:var(--line); color:var(--void); border-color:var(--line)}
-.btn.pri{background:var(--line); color:var(--void); border-color:var(--line); font-weight:600}
-.pace{font-family:var(--mono); font-size:12px; padding:5px 10px; border-radius:99px; border:1px solid var(--edge); color:var(--dim)}
-.pace.ok{color:var(--signal); border-color:rgba(143,227,180,.5)}
-.pace.behind{color:var(--warn); border-color:rgba(242,197,107,.55)}
-.pace.ahead{color:var(--line); border-color:rgba(185,154,230,.55)}
-.p-track{position:relative; height:26px; border-radius:6px; background:var(--panel); border:1px solid var(--edge); overflow:hidden; flex:none}
-.p-track .sec{position:absolute; top:0; bottom:0; border-right:1px solid var(--edge); font:10.5px/26px var(--mono); color:var(--dim); padding-left:5px; overflow:hidden; white-space:nowrap}
-.p-track .sec.cur{background:rgba(122,77,191,.28); color:var(--ink)}
-.p-track .mark{position:absolute; top:0; bottom:0; width:2px; background:var(--glow); box-shadow:0 0 6px var(--glow)}
-.p-main{display:grid; grid-template-columns:minmax(0, 1.55fr) minmax(280px, 1fr); gap:12px; flex:1; min-height:0}
-@media (max-width: 860px){ .p-main{grid-template-columns:minmax(0,1fr)} #pres{overflow:auto} }
-.p-col{display:flex; flex-direction:column; gap:8px; min-width:0; min-height:0}
-.p-label{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); display:flex; justify-content:space-between; gap:8px}
-.pv{position:relative; border:1px solid var(--edge); border-radius:8px; overflow:hidden; flex:none}
-.pv.small{max-width:420px}
-.p-notes{background:var(--panel); border:1px solid var(--edge); border-radius:8px; padding:12px 14px; font-size:16px; line-height:1.5; overflow:auto; min-height:80px}
-.p-row{display:flex; flex-wrap:wrap; gap:6px; align-items:center}
-.p-box{background:var(--panel); border:1px solid var(--edge); border-radius:8px; padding:10px 12px; display:flex; flex-direction:column; gap:8px}
-.p-box input, .p-box textarea{background:#0b0712; border:1px solid var(--edge); border-radius:6px; color:var(--ink); padding:7px 9px; font:13px var(--mono); width:100%; min-width:0}
-.p-box textarea{resize:vertical; line-height:1.4}
-.p-sub{font-size:12px; color:var(--ink2)}
-.p-box small{color:var(--dim); font-size:12px; line-height:1.4}
-.cdread{font:600 18px var(--mono); font-variant-numeric:tabular-nums; color:var(--glow)}
 @media (prefers-reduced-motion: reduce){
-  .robot.building .part, .robot.building .callout, .robot.building .scan, .robot .part.fresh, .robot .callout.fresh, .robot .spin, .robot.idle, .cur, .live::before, #cdchip.done{animation:none !important}
+  .robot.building .part, .robot.building .callout, .robot.building .scan, .robot .part.fresh, .robot .callout.fresh, .robot .spin, .robot.idle, .cur, .live::before{animation:none !important}
   .slide [data-step], .uth{transition:none}
 }
 </style>
@@ -512,86 +467,25 @@ button{font:inherit; color:inherit}
 <div id="aud">
   <div id="stage" aria-live="polite"></div>
 </div>
-<div id="pres" hidden>
-  <div class="p-top">
-    <div class="p-sec"><b id="pSec">Section</b><span id="pPlan">Planned</span></div>
-    <span class="pace" id="pPace">Clock not started</span>
-    <div class="p-clock">
-      <span class="big" id="pElapsed" aria-label="Elapsed time">0:00</span>
-      <button class="btn pri" id="pTimer" type="button">Start clock</button>
-      <button class="btn" id="pReset" type="button">Reset</button>
-    </div>
-  </div>
-  <div class="p-track" id="pTrack" aria-hidden="true"></div>
-  <div class="p-main">
-    <div class="p-col">
-      <div class="p-label"><span id="pNow">Now</span><span id="pStep"></span></div>
-      <div class="pv ghost" id="pvCur"></div>
-      <div class="p-row">
-        <button class="btn" id="bPrev" type="button">‹ Back</button>
-        <button class="btn pri" id="bNext" type="button">Next ›</button>
-        <button class="btn" id="bUth" type="button">Under the hood (U)</button>
-        <button class="btn" id="bClip" type="button">Backup (C)</button>
-        <button class="btn" id="bAns" type="button">Ideas (A)</button>
-        <button class="btn" id="bBlack" type="button">Blackout (B)</button>
-        <button class="btn" id="bHelp" type="button">Keys (?)</button>
-      </div>
-    </div>
-    <div class="p-col">
-      <div class="p-label"><span>Next</span><span id="pNextName"></span></div>
-      <div class="pv small" id="pvNext"></div>
-      <div class="p-label"><span>Notes</span></div>
-      <div class="p-notes" id="pNotes"></div>
-      <div class="p-box">
-        <div class="p-label"><span>Hands-on timer</span><span class="cdread" id="cdRead">off</span></div>
-        <div class="p-row" id="cdBtns">
-          <button class="btn" type="button" data-cd="5">5 min</button>
-          <button class="btn" type="button" data-cd="6">6 min</button>
-          <button class="btn" type="button" data-cd="7">7 min</button>
-          <button class="btn" type="button" data-cd="8">8 min</button>
-          <button class="btn" type="button" data-cd="10">10 min</button>
-          <button class="btn" type="button" data-cd="0">Stop</button>
-        </div>
-        <small>Shows a countdown in the corner of the big screen. On hands-on slides, press H to start the slide’s own timer.</small>
-      </div>
-      <div class="p-box">
-        <div class="p-label"><span>Idea wall (optional) · press A on slide 5 or 29</span></div>
-        <label class="p-sub" for="ans5">Slide 5: tasks for a co-worker, one per line</label>
-        <textarea id="ans5" rows="4" spellcheck="false"></textarea>
-        <div class="p-row"><button class="btn" type="button" data-sample="s5">Use sample ideas</button><button class="btn" type="button" data-clear="s5">Clear</button></div>
-        <label class="p-sub" for="ans29">Slide 29: what DAVE may do without asking</label>
-        <textarea id="ans29" rows="3" spellcheck="false"></textarea>
-        <div class="p-row"><button class="btn" type="button" data-sample="s29">Use sample ideas</button><button class="btn" type="button" data-clear="s29">Clear</button></div>
-        <small>Use the sample ideas, or type your own, to get the room thinking. They show as “some ideas to get us started”.</small>
-      </div>
-    </div>
-  </div>
-</div>
 <div id="help" hidden>
   <div class="helpbox" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
-    <h2 id="helpTitle">Running the deck</h2>
-    <p>Open this deck in two windows. Put one on the big screen and press F for full screen. In the other, press P for the presenter console. The two windows stay in step, including the clock and timers.</p>
+    <h2 id="helpTitle">Using the deck</h2>
     <dl>
-      <dt>→ Space PgDn</dt><dd>Next step or slide (works with most clickers)</dd>
+      <dt>→ Space PgDn</dt><dd>Next step or slide</dd>
       <dt>← PgUp</dt><dd>Back</dd>
+      <dt>Click / tap</dt><dd>Right side goes forward, left side goes back</dd>
       <dt>Home / End</dt><dd>First / last slide</dd>
       <dt>number + Enter</dt><dd>Jump to that slide</dd>
-      <dt>P</dt><dd>Switch between presenter console and audience view</dd>
       <dt>F</dt><dd>Full screen</dd>
       <dt>U</dt><dd>Under the hood, on slides that have one</dd>
-      <dt>C</dt><dd>Backup on demo slides: your recording if one is linked, otherwise a replay</dd>
-      <dt>Shift + C</dt><dd>Always the replay</dd>
-      <dt>A</dt><dd>Idea wall on slides 5 and 29 (sample ideas)</dd>
-      <dt>B</dt><dd>Blackout</dd>
-      <dt>T</dt><dd>Start or pause the clock</dd>
-      <dt>H</dt><dd>Start the hands-on timer on a hands-on slide</dd>
+      <dt>C</dt><dd>Replay the demo, on demo slides</dd>
       <dt>Esc</dt><dd>Close an overlay</dd>
     </dl>
     <button class="close" type="button" id="helpClose">Close</button>
   </div>
 </div>
 <div id="toast" hidden></div>
-<div id="hint">? for keys · P for presenter</div>
+<div id="hint">? for keys · U under the hood · C demo replay</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
@@ -705,18 +599,6 @@ button{font:inherit; color:inherit}
   function robotBox(mode, lit, cls){ return '<div class="rbox">' + robotSVG(mode, lit, cls) + '</div>'; }
 
   /* ================= Sections and slides ================= */
-  var SECTIONS = [
-    {id:'pre', name:'Pre-show',            start:-10, end:0},
-    {id:'A',   name:'A · Cold open',       start:0,   end:10},
-    {id:'B',   name:'B · The blueprint',   start:10,  end:25},
-    {id:'C',   name:'C · Loop 1: power and brain', start:25, end:45},
-    {id:'D',   name:'D · Loop 2: skills',  start:45,  end:65},
-    {id:'E',   name:'E · Loop 3: MCP',     start:65,  end:85},
-    {id:'F',   name:'F · Loop 4: extensions', start:85, end:100},
-    {id:'G',   name:'G · Finale: the fleet', start:100, end:112},
-    {id:'H',   name:'H · Wrap',            start:112, end:120}
-  ];
-  var SEC = {}; SECTIONS.forEach(function(s){ SEC[s.id] = s; });
   function foot(n, label){ return '<div class="foot"><span>Beyond the Prompt · Advanced Workshop 1</span><span>' + esc(label) + ' · ' + String(n).padStart(2, '0') + '</span></div>'; }
 
   /* ================= Slide helpers ================= */
@@ -779,7 +661,7 @@ button{font:inherit; color:inherit}
   function qrCard(url, q, sub, step){
     return '<div class="card qrcard' + (url ? '' : ' empty') + '"' + (step ? ' data-step="' + step + '"' : '') + '>' +
       '<p class="q">' + esc(q) + '</p>' +
-      '<div class="qrbox" data-qr="' + esc(url) + '">' + (url ? '' : 'Add the form link in presenter mode') + '</div>' +
+      '<div class="qrbox" data-qr="' + esc(url) + '">' + '' + '</div>' +
       (url ? '<p class="u">' + esc(url.replace(/^https?:\/\//, '')) + '</p>' : '') +
       '<p class="eyebrow">' + esc(sub) + '</p></div>';
   }
@@ -805,7 +687,6 @@ button{font:inherit; color:inherit}
   var SLIDES = [
     { // 0
       sec:'pre', title:'Get set up', steps:0,
-      notes:'Leave this up as people arrive. Pairs: one types, one navigates, and they swap every loop. Setup takes 2 to 3 minutes: it installs Node.js, pi and uv in the home folder (no sudo or admin password), then asks for the studio address and the key on the handout, and saves both for pi. It never starts pi; that happens on slide 14. Re-running it is safe. Windows laptops use setup.ps1 (second line). Clone fails? Hand out the offline bundle. Afterward, on shared studio machines: ./setup.sh --forget-key removes the saved key.',
       html:function(){ return '<div class="s-setup"><div class="pad">' +
         '<p class="eyebrow">agent-dave / advanced-workshop-01 / before we start</p>' +
         '<h2 class="h1">Get set up</h2>' +
@@ -820,7 +701,6 @@ button{font:inherit; color:inherit}
     },
     { // 1
       sec:'A', title:'Beyond the prompt.', steps:0,
-      notes:'Welcome. Your name, the AI Studio, and what the next two hours are: we build a working AI co-worker from parts. About 30 seconds.',
       html:function(){ return '<div class="title"><div class="t-left">' +
         '<p class="eyebrow">agent-dave / advanced-workshop-01</p>' +
         '<h2 class="hero">Beyond the prompt.</h2>' +
@@ -832,7 +712,6 @@ button{font:inherit; color:inherit}
     },
     { // 2
       sec:'A', title:'Meet DAVE', steps:5,
-      notes:'Click through one letter at a time. Let the laugh land on the last word. Then: "By the end of today, everyone here has their own DAVE."',
       html:function(){ return '<div class="pad">' +
         '<p class="eyebrow">cold open / meet your co-worker</p><h2 class="h1">Meet DAVE.</h2>' +
         '<div class="acro">' +
@@ -846,7 +725,6 @@ button{font:inherit; color:inherit}
     },
     { // 3
       sec:'A', title:'DAVE at work', steps:0, clip:'teaser',
-      notes:'Switch to your terminal and run the cold-open task. About 3 minutes. The guard asks once before DAVE edits ~/docs (outside the repo): pick “Yes, for the rest of this session” and say “more on that in loop 3”. Narrate what DAVE is doing, not how; the how comes next. If anything stalls, come back here and press C: it plays the replay (or your recording, once linked).',
       html:function(){ return '<div class="pad">' +
         '<span class="live">LIVE DEMO</span>' +
         '<h2 class="h1">DAVE at work</h2>' +
@@ -857,7 +735,6 @@ button{font:inherit; color:inherit}
     },
     { // 4
       sec:'A', title:'What just happened?', steps:4,
-      notes:'Walk the steps two at a time. Each tag is a part of the robot. Close with: "Every one of these is something you’ll bolt on today." Press U for the raw tool calls. Before the session, replace the example capture with your real run and check these steps match it.',
       html:function(){
         function st(n, step, text, tags){ return '<div class="rstep" data-step="' + step + '"><span class="n">' + String(n).padStart(2, '0') + '</span><div><b>' + text + '</b><div class="tags">' + tags.map(function(t){ return '<span class="pill">' + t + '</span>'; }).join('') + '</div></div></div>'; }
         return '<div class="pad">' +
@@ -884,8 +761,7 @@ button{font:inherit; color:inherit}
         '<span class="k">assistant</span>\n  Done. Updated docs for 2 of 3 repos.</pre>'; }
     },
     { // 5
-      sec:'A', title:'Your turn, two hours from now', steps:1, ansKey:'s5', ansTitle:'One task you’d hand a co-worker',
-      notes:'What they leave with. Step forward for the question and let it sit for a few seconds: no phones, just ask them to keep one real task in mind. It comes back in Loop 2 (their own skill) and the finale. In a quiet room, press A for a few sample ideas to get people thinking.',
+      sec:'A', title:'Your turn, two hours from now', steps:1,
       html:function(){
         return '<div class="pad">' +
         '<p class="eyebrow">cold open / the promise</p><h2 class="h1">Your turn, two hours from now</h2>' +
@@ -900,7 +776,6 @@ button{font:inherit; color:inherit}
     },
     { // 6
       sec:'B', title:'Chatbot vs. co-worker', steps:3,
-      notes:'Left: you ask, it answers, and you still do the work. Right: you set a goal, and it loops until the job is done, checking its own work along the way. Land the line: "A chatbot talks. A co-worker does."',
       html:function(){ return '<div class="pad">' +
         '<p class="eyebrow">blueprint / chatbot vs. co-worker</p><h2 class="h1">Chatbot vs. co-worker</h2>' +
         '<div class="vs">' +
@@ -914,7 +789,6 @@ button{font:inherit; color:inherit}
     },
     { // 7
       sec:'B', title:'The agent loop', steps:2,
-      notes:'The heart of every agent. The model only writes text: it decides the next step and asks for a tool. pi runs the tool and puts the result back into the conversation, and the loop goes again until the model says it’s done. Press U to show the actual message sequence.',
       html:function(){
         var anim = reducedMotion() ? '' : '<circle class="dot" r="6"><animateMotion dur="6s" repeatCount="indefinite" path="M300 75 A165 165 0 0 1 443 322 A165 165 0 0 1 157 322 A165 165 0 0 1 300 75"/></circle>';
         function ah(x, y, r){ return '<path class="ah" d="M-7 -6 L7 0 L-7 6 z" transform="translate(' + x + ' ' + y + ') rotate(' + r + ')"/>'; }
@@ -951,7 +825,6 @@ button{font:inherit; color:inherit}
     },
     { // 8
       sec:'B', title:'Anatomy of an agent', steps:10, anatomy:true,
-      notes:'The map for the whole session. Each click bolts on one part; one sentence each, about 20 seconds. 1 Brain: the model does the thinking, and you can swap it without rebuilding anything. 2 Chassis: pi runs the loop of think, act, check the result, repeat; a brain without a body is just a chatbot. 3 Power supply: the brain needs electricity, here the studio endpoint spreading requests across our Ollama nodes. 4 Hands: four simple tools to read, write, edit and run commands, and that is enough to do real work. 5 ID badge: AGENTS.md says who DAVE is and how he behaves, and it is the first file you will change. 6 Instruction manuals: skills he opens only when a task needs them, so his head stays clear. 7 Drone: MCP flies out to services that live outside DAVE, like the campus calendar. 8 Upgrade module: TypeScript extensions add new tools and commands, and DAVE can write his own. 9 Black box: every step is recorded, so you can rewind and debug. 10 Fleet antenna: one DAVE can hand pieces of a job to a crew. Close with: “Every agent framework has these ten parts, whatever it calls them.” Clicking a revealed part shows it again. Assemble DAVE shows all ten at once with the full assembly.',
       html:function(){ return '<div class="anat"><div class="rob">' + robotBox('anat', null, 'anat-svg stepped') + '</div>' +
         '<div class="panel"><p class="eyebrow">blueprint / anatomy</p><h3>Anatomy of an agent</h3>' +
         '<p class="lede">Every agent has these ten parts, whatever its framework calls them.</p>' +
@@ -960,7 +833,6 @@ button{font:inherit; color:inherit}
     },
     { // 9
       sec:'B', title:'Why pi?', steps:2,
-      notes:'Goal two: once you know the parts, any framework is readable. Keep it neutral: no framework names, no knocking anyone. The point is that the same parts show up everywhere under different names.',
       html:function(){ return '<div class="pad">' +
         '<p class="eyebrow">blueprint / why pi</p><h2 class="h1">Why pi?</h2>' +
         '<div class="why"><div class="card core"><h3>A small core you can see</h3><ul>' +
@@ -981,7 +853,6 @@ button{font:inherit; color:inherit}
     },
     { // 10
       sec:'B', title:'Context engineering: DAVE’s workbench', steps:3,
-      notes:'Everything DAVE knows in the moment has to fit on one workbench: the context window. Things that are always on the bench (identity, tool definitions) cost space on every single turn. Lesson: keep the always-on part small and load the rest only when needed. This sets up skills and tool design. Press U for token counts; swap in real ones from DAVE before the session.',
       html:function(){
         var segs = [
           ['System prompt', 4, '#e6dbff', 'pi’s short base instructions'],
@@ -1011,7 +882,6 @@ button{font:inherit; color:inherit}
     },
     { // 11
       sec:'B', title:'The build plan', steps:0,
-      notes:'Hand off to the first build. Each stop bolts on more of DAVE. Remind pairs to swap who’s typing at every loop.',
       html:function(){
         var stops = [
           ['0:25', 'Loop 1 · Power up', 'Model, harness, identity, built-in tools', ['power', 'chassis', 'brain', 'badge', 'hands']],
@@ -1029,12 +899,10 @@ button{font:inherit; color:inherit}
     /* ===================== Section C · Loop 1 ===================== */
     { // 12
       sec:'C', title:'Loop 1 opener: Power up', steps:0,
-      notes:'15 seconds. "First loop: we give DAVE power, a brain and an identity."',
       html:function(){ return opener({n:12, kicker:'loop 1 · 0:25', title:'Power up', sub:'Connect DAVE to the studio model and give him an identity.', lit:['power', 'chassis', 'brain', 'badge', 'hands'], parts:['Power supply', 'Brain', 'ID badge', 'Hands']}); }
     },
     { // 13
       sec:'C', title:'Power supply and brain', steps:0,
-      notes:'The power supply is one endpoint for the whole room: Open WebUI takes each request and LiteLLM spreads them across the 13 Ollama nodes. setup.sh asked the studio which models it offers and wrote them into models.json, with your key, so nothing here is hard-coded; settings.json picks the default brain and thinking level. Room default: qwen3.8 with low thinking, which keeps responses quick while 12 machines share the endpoint. Press U for one raw request.',
       html:function(){ return padded('loop 1 / power supply', 'Power supply and brain',
         '<div class="split"><div class="col">' +
           '<p class="lede">One endpoint powers every DAVE in the room.</p>' +
@@ -1051,8 +919,7 @@ button{font:inherit; color:inherit}
       uth:function(){ return uthHead() + '<pre><span class="r">// one turn, as it travels to the endpoint</span>\n<span class="k">POST</span> /api/chat/completions\n{\n  "model": "qwen3.8:27b-q8_0",\n  "messages": [ <span class="r">system, user, …</span> ],\n  "tools": [ <span class="r">read, write, edit, bash</span> ]\n}\n\n<span class="t">200 OK</span>\n{\n  "choices": [{ "message": {\n    "tool_calls": [{ "function": {\n      "name": "bash",\n      "arguments": "{\\"command\\": \\"ls\\"}"\n    }}]\n  }}]\n}</pre><p class="note">Every turn of the loop is one round trip like this. The model only sends text back; pi runs the tool.</p>'; }
     },
     { // 14
-      sec:'C', title:'Hands-on: Wake DAVE up', steps:0, timer:6,
-      notes:'Start the 6-minute timer (H). Walk the room. Setup on slide 0 already installed pi and saved the key, so this is open the folder, start pi, say hello. Most common snag: a terminal opened before setup finished can’t find pi yet; open a new one (VS Code’s own terminal is always fine). Setup didn’t finish? Run it again in VS Code’s terminal. Everyone works in VS Code’s built-in terminal. If the clone fails, hand out the offline bundle (USB or studio share): extract it, open the folder in VS Code, run ./setup.sh. Machine won’t cooperate? Pair them with a neighbor; TROUBLESHOOTING.md in the repo covers the common fixes.',
+      sec:'C', title:'Hands-on: Wake DAVE up', steps:0,
       html:function(){ return handson({n:14, label:'Loop 1', title:'Wake DAVE up', min:6, steps:[
           ['Open DAVE’s folder in VS Code', 'code ~/agent-dave'],
           ['In VS Code’s terminal (Ctrl + `), start DAVE. Say yes when pi asks to trust the folder.', 'pi'],
@@ -1061,7 +928,6 @@ button{font:inherit; color:inherit}
     },
     { // 15
       sec:'C', title:'ID badge: who DAVE is', steps:3,
-      notes:'This is context engineering in practice. AGENTS.md is plain markdown that pi puts on the bench at the start of every session. Keep it short: it costs space on every turn. Step through the annotations. Mention the other two files only briefly: APPEND_SYSTEM.md adds to pi’s base prompt; SYSTEM.md replaces it entirely, which is rarely what you want. Press U for where it lands in context.',
       html:function(){ return padded('loop 1 / id badge', 'Who DAVE is',
         '<div class="split wide"><div class="col">' +
           codeBlock('agent-dave/AGENTS.md', 'md', '# DAVE\nYou are DAVE, the Digital Assistant for Various Endeavors,\na co-worker in the K-State AI Studio.\n\n## How you work\n- Plan before you act. Say what you’ll do in one line.\n- Prefer small, reversible steps. Check your work.\n- Ask before deleting, sending or publishing anything.\n\n## Tone\nFriendly and direct. No jargon unless asked.\n\n## Never\n- Share API keys or passwords.\n- Edit files outside the folders you were given.') +
@@ -1078,8 +944,7 @@ button{font:inherit; color:inherit}
       uth:function(){ return uthHead('How pi builds it') + '<pre><span class="k">system prompt</span>\n  pi’s base instructions\n  <span class="r">+ APPEND_SYSTEM.md, if present</span>\n\n<span class="k">context files</span>, in order\n  ~/.pi/agent/AGENTS.md      <span class="r">global</span>\n  ../AGENTS.md               <span class="r">parent folders</span>\n  ./AGENTS.md                <span class="r">the repo: DAVE’s badge</span>\n\n<span class="k">skills</span>      name + description only\n<span class="k">tools</span>       read, write, edit, bash\n\n<span class="t">then the conversation</span></pre><p class="note">All of this is on the bench before you type a word.</p>'; }
     },
     { // 16
-      sec:'C', title:'Hands-on: Make DAVE yours', steps:0, timer:7,
-      notes:'Start the 7-minute timer (H). Push non-coders toward a role from their own job. Good prompts are on screen, and more are in samples/prompts.md. If someone finishes early: add a second rule and test it. Behind? checkpoints/loop-1 has a finished AGENTS.md to copy.',
+      sec:'C', title:'Hands-on: Make DAVE yours', steps:0,
       html:function(){ return handson({n:16, label:'Loop 1', title:'Make DAVE yours', min:7, steps:[
           ['In VS Code, open AGENTS.md at the top of the repo', null],
           ['Rename your co-worker and give them a role from your work', null],
@@ -1089,7 +954,6 @@ button{font:inherit; color:inherit}
     },
     { // 17
       sec:'C', title:'Same brain, different co-worker', steps:3,
-      notes:'Ask two or three pairs to read their new co-worker’s answer aloud. The cards are examples to show the idea if the room is quiet; to run one live, the finished badges are in examples/personas (GRACE, LENNY, CORA). Point: the model didn’t change. Only the badge did.',
       html:function(){
         function c(step, name, role, ans){ return '<div class="card persona" data-step="' + step + '"><span class="pill">' + role + '</span><b>' + name + '</b><p>“' + ans + '”</p></div>'; }
         return padded('loop 1 / reveal', 'Same brain, different co-worker',
@@ -1104,12 +968,10 @@ button{font:inherit; color:inherit}
     /* ===================== Section D · Loop 2 ===================== */
     { // 18
       sec:'D', title:'Loop 2 opener: Instruction manuals', steps:0,
-      notes:'15 seconds. "DAVE can work. Now we teach him how we like things done."',
       html:function(){ return opener({n:18, kicker:'loop 2 · 0:45', title:'Instruction manuals', sub:'Teach DAVE a workflow once. He pulls it off the shelf when a task needs it.', lit:['power', 'chassis', 'brain', 'badge', 'hands', 'manuals'], parts:['Instruction manuals']}); }
     },
     { // 19
       sec:'D', title:'Progressive disclosure', steps:3,
-      notes:'The answer to the crowded workbench. DAVE only sees the spine of each manual: a name and a one-line description. When a task matches, he opens that one manual. Attachments inside it are opened only if the steps call for them. Press U for the token comparison (example numbers).',
       html:function(){
         var spines = ['meeting-notes', 'research-brief', 'campus-lookup', 'doc-sync', 'your skill'];
         return padded('loop 2 / progressive disclosure', 'Only the spine sits on the bench',
@@ -1123,7 +985,6 @@ button{font:inherit; color:inherit}
     },
     { // 20
       sec:'D', title:'Anatomy of a SKILL.md', steps:3,
-      notes:'One of DAVE’s starter skills. The description matters most: it’s the spine label, and it decides when the skill fires. Say what it does and when to use it. /skill:meeting-notes forces it by name.',
       html:function(){ return padded('loop 2 / anatomy of a skill', 'Anatomy of a SKILL.md',
         '<div class="split wide"><div class="col">' +
           codeBlock('agent-dave/.pi/skills/meeting-notes/SKILL.md', 'md', '---\nname: meeting-notes\ndescription: Turn rough notes or a transcript into minutes\n  with decisions, action items and owners. Use when the\n  user pastes meeting notes or asks for minutes.\n---\n# Meeting notes\n1. Read the notes. Ask for the date if it’s missing.\n2. Write a 3-line summary, the decisions, and action\n   items with an owner and a due date.\n3. Follow the layout in template.md.\n4. Save to notes/YYYY-MM-DD-topic.md') +
@@ -1135,8 +996,7 @@ button{font:inherit; color:inherit}
         '</div></div>', 20, 'Loop 2'); }
     },
     { // 21
-      sec:'D', title:'Hands-on: Teach DAVE a skill', steps:0, timer:8,
-      notes:'Start the 8-minute timer (H). The checkpoint matters: a fresh session should use the skill without being told its name. If it doesn’t fire, the fix is almost always the description. Stuck for an idea? Point them to https://awesomeskill.ai/ (a catalog of open-source SKILL.md skills, browsable by category) for inspiration, or samples/skill-ideas.md and samples/meeting-notes/. Behind? checkpoints/loop-2.',
+      sec:'D', title:'Hands-on: Teach DAVE a skill', steps:0,
       html:function(){ return handson({n:21, label:'Loop 2', title:'Teach DAVE a skill', min:8, steps:[
           ['Try a starter skill: paste messy notes and ask for minutes', null],
           ['In VS Code, copy the templates/my-skill folder and paste it into .pi/skills', null],
@@ -1147,14 +1007,12 @@ button{font:inherit; color:inherit}
     },
     { // 22
       sec:'D', title:'WHOA: DAVE writes his own skill', steps:0, clip:'skill',
-      notes:'Callback to the cold open. Ask DAVE to turn what he did with your repos into a skill. Then start a fresh session and ask in plain words; he finds the skill himself. Pause on the new SKILL.md: anyone can read it. If the saved skill misfires, copy examples/demo/doc-sync into .pi/skills and start a new session. Backup: C.',
       html:function(){ return demo({n:22, label:'Loop 2', title:'DAVE writes his own skill', lede:'Remember the repos and docs from the start? Let’s make it a habit.',
         prompt:'Save what you did with my repos and docs earlier as a skill called doc-sync, so you can do it again next week.',
         pills:['writes SKILL.md', 'fresh session', '“sync my docs”', 'finds it himself']}); }
     },
     { // 23
       sec:'D', title:'When skills misfire', steps:3,
-      notes:'Quick debrief. Three failure modes, each with its fix. Point back to the template.',
       html:function(){
         function f(step, t, cause, fix){ return '<div class="card fail" data-step="' + step + '"><b>' + t + '</b><p class="cause">' + cause + '</p><p class="fix"><span>Fix</span>' + fix + '</p></div>'; }
         return padded('loop 2 / debugging skills', 'When skills misfire',
@@ -1168,12 +1026,10 @@ button{font:inherit; color:inherit}
     /* ===================== Section E · Loop 3 ===================== */
     { // 24
       sec:'E', title:'Loop 3 opener: The drone', steps:0,
-      notes:'15 seconds. "DAVE knows how to work. Now he gets a drone to reach the world beyond his terminal."',
       html:function(){ return opener({n:24, kicker:'loop 3 · 1:05', title:'The drone', sub:'Send DAVE’s drone out to the web and campus data with MCP.', lit:['power', 'chassis', 'brain', 'badge', 'hands', 'manuals', 'ports'], parts:['Drone']}); }
     },
     { // 25
       sec:'E', title:'What MCP is', steps:2,
-      notes:'MCP, the Model Context Protocol, is a standard way to reach outside services. MCP servers live outside DAVE, some on this machine and some on the internet, which is why this part is a drone and not something bolted on. DAVE sends it out, it speaks the same protocol to every server, and it brings the results back. Each server brings its own tools. It’s built into pi: servers are listed in mcp.json, and /mcp shows what’s connected. The repo ships two: fetch, a ready-made server that reads any web page, and campus-events, about 250 lines we wrote for the K-State calendar. It’s in mcp/campus-events, so anyone can read how a server is made.',
       html:function(){ return padded('loop 3 / model context protocol', 'One drone, many destinations',
         '<div class="split"><div class="col hubwrap">' + hubSVG() + '</div><div class="col">' +
           '<p class="lede">MCP is a standard way to reach outside services. Each MCP server is a destination with its own tools, and the drone talks to all of them the same way.</p>' +
@@ -1184,7 +1040,6 @@ button{font:inherit; color:inherit}
     },
     { // 26
       sec:'E', title:'Good tools, bad tools', steps:2,
-      notes:'Tool design is context engineering for actions. A tool’s name and description sit on the bench just like a skill’s spine, so they need to be clear and narrow. Then: pi doesn’t have to list every MCP tool. By default (Codemode) DAVE writes a short script that looks tools up and calls them; "deferred" loads a tool only when searched for; "direct" lists it like a built-in. On the local model, test which works best before the session. Press U for a tool definition as the model sees it.',
       html:function(){ return padded('loop 3 / tool design', 'Good tools, bad tools',
         '<div class="split"><div class="col">' +
           '<div class="tooldef bad"><span class="tag">vague</span><p class="mono"><b>do_stuff</b>(input)</p><p>“Does things with events.”</p></div>' +
@@ -1200,8 +1055,7 @@ button{font:inherit; color:inherit}
       uth:function(){ return uthHead('Under the hood', 'From the repo') + '<pre><span class="r">// what the model reads for one tool</span>\n{\n  <span class="k">"name"</span>: "find_events",\n  <span class="k">"description"</span>: "Find K-State calendar events\n     between two dates (YYYY-MM-DD, up to 31\n     days), optionally matching a keyword.\n     Returns id, title, times, location and\n     link. Pass ids to export_ics.",\n  <span class="k">"inputSchema"</span>: {\n    "properties": {\n      "start_date": { "type": "string",\n        "description": "First day to search, YYYY-MM-DD" },\n      "end_date": { "type": "string", … },\n      "keyword": { "type": "string",\n        "description": "Words to match in the title,\n          description or location, e.g. \\"AI\\"" }\n    },\n    "required": ["start_date", "end_date"]\n  }\n}</pre><p class="note">This is the real definition from <code>mcp/campus-events</code>, and it’s all the model knows about the tool. If it isn’t here, DAVE can’t guess it.</p>'; }
     },
     { // 27
-      sec:'E', title:'Hands-on: Launch the drone', steps:0, timer:8,
-      notes:'Start the 8-minute timer (H). The starter repo already lists both servers, and setup.sh installs campus-events’ packages. If a server shows as failed, run pi mcp list in the shell to see why: campus-events needs npm install --prefix mcp/campus-events and pi started from the repo folder; fetch needs uv. Step 3 uses campus-events (find_events, then export_ics); step 4 sends fetch to an event’s page. The .ics file is plain text, so it opens in VS Code. No internet? Step 3 still works from campus-events’ saved snapshot; skip step 4. Behind? checkpoints/loop-3 has a finished events.ics.',
+      sec:'E', title:'Hands-on: Launch the drone', steps:0,
       html:function(){ return handson({n:27, label:'Loop 3', title:'Launch the drone', min:8, steps:[
           ['Check both servers connect', 'pi mcp list'],
           ['Start DAVE and see where his drone can fly', '/mcp'],
@@ -1212,14 +1066,12 @@ button{font:inherit; color:inherit}
     },
     { // 28
       sec:'E', title:'WHOA: DAVE reaches the real world', steps:0, clip:'world',
-      notes:'Run it on your laptop in the agent-dave folder. No Outlook connection is needed: an .ics file is the standard calendar-invite format. When DAVE saves it, double-click it to open the event in Outlook, then point out that the same file works in Google Calendar and Apple Calendar, and that attendees can do this tonight. No internet? campus-events falls back to its saved snapshot on its own and says so. Backup: C.',
       html:function(){ return demo({n:28, label:'Loop 3', title:'DAVE reaches the real world', lede:'Campus data in, a real calendar invite out.',
         prompt:'Find AI-related events on the K-State calendar in the next two weeks. Pick the best one for my team and export it as an .ics file I can open in Outlook.',
         pills:['searches the calendar', 'picks an event', 'writes the .ics', 'opens in Outlook']}); }
     },
     { // 29
-      sec:'E', title:'Trust and permissions', steps:1, ansKey:'s29', ansTitle:'What DAVE may do without asking',
-      notes:'The responsible-use beat. A co-worker you can’t supervise isn’t a co-worker. The recommended stop is what DAVE’s guard.ts enforces; 29b shows how. Step forward for the question and give them a moment to pick a setting for their own work, silently. Press A for a few sample ideas if the room needs a nudge.',
+      sec:'E', title:'Trust and permissions', steps:1,
       html:function(){
         function d(cls, t, ex){ return '<div class="dstop ' + cls + '"><b>' + t + '</b><span>' + ex + '</span></div>'; }
         return padded('loop 3 / trust', 'How much should DAVE do without asking?',
@@ -1234,7 +1086,6 @@ button{font:inherit; color:inherit}
     },
     { // 29b
       sec:'E', num:'29b', title:'Safety interlocks: beyond asking nicely', steps:2, clip:'guard',
-      notes:'About 3 minutes. Step 1: walk down the ladder. For one run, pi --tools read,grep,find,ls gives the same read-only DAVE as defaultTools. AGENTS.md is a request: the model usually listens, and a prompt can talk it out of it. Everything below it is enforced by pi or the OS, whatever the model decides. pi’s own security docs say the cage is the only real boundary. Step 2, live in your terminal (agent-dave, with an events.ics present): paste the prompt, and when the guard asks, pick No. DAVE stops and asks you. Optional second beat: “Put my API key in .env” is blocked outright. Press U for the rules file, .pi/guard.jsonc: each rule says allow, ask or never, and its dial uses the same four settings as slide 29. In pi, /guard test git push shows which rule decides. The last look: even after a yes (or with /guard off), a short fixed list of catastrophic commands (rm -rf ~, deleting C:\\Windows, formatting a disk, dd to a disk, git push --force to main …) stops again and runs only if you type RUN. Try /guard test rm -rf ~. Stalls? Press C for the replay. /guard off pauses it.',
       html:function(){
         function r(step, where, what, how, tag){ return '<div class="rein" data-step="' + step + '"><span class="pill lit">' + where + '</span><div><b>' + what + '</b><span>' + how + '</span></div><em class="tag ' + tag + '">' + tag + '</em></div>'; }
         return padded('loop 3 / safety interlocks', 'Asking nicely isn’t a lock',
@@ -1256,7 +1107,6 @@ button{font:inherit; color:inherit}
     /* ===================== Section F · Loop 4 ===================== */
     { // 29c
       sec:'E', num:'29c', title:'Super-advanced: a model as the judge', steps:2, clip:'judge',
-      notes:'Super-advanced, about 3 minutes, and optional: if Loop 3 is running past 1:20, say “there’s one more layer in the README” and press → twice to skip to Loop 4. Rules catch what you expected; DAVE is good at finding what you didn’t. Step 1: walk the pipeline. Rules decide first. A command no rule matched goes to a decision model: Clef (Cloudflare, Apache 2.0) through Ollama’s System One API. It doesn’t write text: one pass returns a probability for allow, ask and never. A narrow allow (under 80%) still asks a person. With judge.maxVerdict "ask" (as shipped), the judge’s never also becomes a question: it can flag a call as dangerous, but it can’t lock you out, and that cap is applied by the guard after the answer, so it doesn’t depend on the model following instructions. Your own never rules still block. If the judge is down, the guard asks. Step 2, live on your laptop (judge connected with /guard judge setup, which also switches on "otherCommands": "check"; events.ics present; /guard judge confirms it answers): first the quick, sure-fire version, typing /guard test python3 -c "import os; os.remove(\'events.ics\')" then /guard test ls -la and /guard test cat ~/.ssh/id_rsa (the judge says never, 94%; with maxVerdict "ask" the guard asks you instead of blocking). Measured on clef-flash: about 0.1 s per check once warm; the guard warms it up when pi starts. Then the prompt on screen: DAVE dodges the rm rule with Python and the judge still asks. Pick No. (The question also offers Always allow / Always block, which save a rule to guard.jsonc for that exact command or its prefix, such as pip install.) Press U for the actual request and answer. Stalls? C for the replay. Ships switched off for attendees; it’s in the take-home guide.',
       html:function(){
         function stage(step, k, title, body){ return '<div class="jstage" data-step="' + step + '"><span class="pill lit">' + k + '</span><div><b>' + title + '</b><span>' + body + '</span></div></div>'; }
         function bar(label, pct, cls){ return '<div class="pbar ' + cls + '"><span>' + label + '</span><i style="width:' + pct + '%"></i><em>' + pct + '%</em></div>'; }
@@ -1276,12 +1126,10 @@ button{font:inherit; color:inherit}
     },
     { // 30
       sec:'F', title:'Loop 4 opener: Upgrade modules', steps:0,
-      notes:'15 seconds. "Last loop: DAVE gets upgrades, and we learn to read his black box."',
       html:function(){ return opener({n:30, kicker:'loop 4 · 1:25', title:'Upgrade modules', sub:'Give DAVE new abilities in code, and read his black box when he misbehaves.', lit:['power', 'chassis', 'brain', 'badge', 'hands', 'manuals', 'ports', 'upgrades', 'blackbox'], parts:['Upgrade module', 'Black box']}); }
     },
     { // 31
       sec:'F', title:'What an extension is', steps:1,
-      notes:'An extension is a TypeScript file in the repo’s .pi/extensions folder that pi loads at startup. This one adds a tool and a slash command. Non-coders: "You won’t write this by hand. Watch the next slide." /reload picks up changes without restarting.',
       html:function(){ return padded('loop 4 / extensions', 'What an extension is',
         '<div class="split wide"><div class="col">' +
           codeBlock('agent-dave/.pi/extensions/hello.ts', 'ts', 'import { type ExtensionAPI } from "@earendil-works/pi-coding-agent";\nimport { Type } from "typebox";\n\nexport default function (pi: ExtensionAPI) {\n  // a new tool DAVE can call\n  pi.registerTool({\n    name: "greet",\n    description: "Greet someone by name",\n    parameters: Type.Object({ name: Type.String() }),\n    async execute(id, params) {\n      return { details: {}, content: [{ type: "text",\n        text: `Hello, ${params.name}!` }] };\n    },\n  });\n  // a new slash command for you\n  pi.registerCommand("hello", {\n    description: "Say hello",\n    handler: async (args, ctx) => ctx.ui.notify("Hello!", "info"),\n  });\n}', 'sm') +
@@ -1293,14 +1141,12 @@ button{font:inherit; color:inherit}
     },
     { // 32
       sec:'F', title:'WHOA: DAVE upgrades himself', steps:0, clip:'upgrade',
-      notes:'The robot building his own parts. Needs yesterday’s real sessions on your machine (pi keeps them in ~/.pi/agent/sessions/). Pause on the moment /standup appears after /reload. If his extension won’t load, copy examples/demo/standup.ts into .pi/extensions and /reload. Backup: C.',
       html:function(){ return demo({n:32, label:'Loop 4', title:'DAVE upgrades himself', lede:'He writes his own upgrade module, then uses it.',
         prompt:'Write yourself an extension that adds a /standup command. It should read all my pi sessions from yesterday and give me a short recap of what we did.',
         pills:['writes standup.ts', '/reload', '/standup', 'recaps yesterday']}); }
     },
     { // 33
       sec:'F', title:'Reading the black box', steps:4,
-      notes:'Practical debugging. pi records every step as a tree, so you can see exactly what DAVE saw and did. Most failures come from what’s on the bench: unclear tool descriptions, too many tools, or too much context. Press U for a real failed session (capture one before the day).',
       html:function(){
         function f(step, t, fix){ return '<div class="card fail sm" data-step="' + step + '"><b>' + t + '</b><p class="fix"><span>Fix</span>' + fix + '</p></div>'; }
         return padded('loop 4 / debugging', 'Reading the black box',
@@ -1322,8 +1168,7 @@ button{font:inherit; color:inherit}
       uth:function(){ return uthHead() + '<pre><span class="r">// /export → session.jsonl (excerpt)</span>\n{"type":"assistant","toolCall":{\n  "name":"fetch",\n  "url":"https://events.k-state.edu/calender"}}\n{"type":"toolResult","isError":true,\n  "text":"404 Not Found"}\n{"type":"assistant","toolCall":{\n  "name":"fetch",\n  "url":"https://events.k-state.edu/calender"}}\n{"type":"toolResult","isError":true,\n  "text":"404 Not Found"}\n<span class="r">… the same mistake, repeated</span></pre><p class="note">The error never said what was wrong, so DAVE kept trying the same call. A better error message is the fix.</p>'; }
     },
     { // 34
-      sec:'F', title:'Hands-on: Upgrade and inspect', steps:0, timer:8,
-      notes:'Start the 8-minute timer (H). Everyone installs the same package, rpiv-ask-user-question. It adds one tool, ask_user_question: instead of guessing, DAVE opens a dialog with up to four multiple-choice questions, each with a free-text row. Arrow keys and Enter to answer, Esc to back out. It needs pi restarted after install, not /reload. Tie-in: this is the trust dial from slide 29 in action, and the tool call is easy to spot in /tree. pi.dev warns that packages run code, so review its source before the day. No internet? From the offline bundle: pi install ./vendor/ask-user-question, then restart pi.',
+      sec:'F', title:'Hands-on: Upgrade and inspect', steps:0,
       html:function(){ return handson({n:34, label:'Loop 4', title:'Upgrade and inspect', min:8, steps:[
           ['Install a package that lets DAVE ask you questions', 'pi install npm:@juicesharp/rpiv-ask-user-question'],
           ['Exit pi and start it again', 'pi'],
@@ -1335,12 +1180,10 @@ button{font:inherit; color:inherit}
     /* ===================== Section G · Finale ===================== */
     { // 35
       sec:'G', title:'Finale opener: Fleet antenna', steps:0,
-      notes:'15 seconds. "One DAVE is useful. What about a crew?"',
       html:function(){ return opener({n:35, kicker:'finale · 1:40', title:'The fleet', sub:'One DAVE is a co-worker. Several are a team.', lit:null, parts:['Fleet antenna']}); }
     },
     { // 36
       sec:'G', title:'One DAVE vs. a crew', steps:2,
-      notes:'The fleet antenna is the pi-subagents extension. The lead DAVE calls a tool named subagent to hand pieces of a job to worker DAVEs. Each worker is a focused child pi session with its own job, so it starts with a clean bench: another context-engineering payoff. Workers are defined the same way as everything else today, as a markdown file with a name, a description and instructions, in .pi/agents/. pi-subagents also ships ready-made workers such as scout, researcher, worker and reviewer.',
       html:function(){ return padded('finale / the crew', 'One DAVE vs. a crew',
         '<div class="split"><div class="col crewwrap">' + crewSVG() + '<div class="term small" data-step="2" style="align-self:center"><div><span class="p">$</span> pi install npm:pi-subagents</div></div></div><div class="col">' +
           '<div class="annrow"><span class="pill lit">Lead DAVE</span><span>Calls the <code>subagent</code> tool to hand out pieces of the job, then assembles the answer.</span></div>' +
@@ -1351,7 +1194,6 @@ button{font:inherit; color:inherit}
     },
     { // 37
       sec:'G', title:'WHOA: A crew of DAVEs', steps:0, clip:'crew',
-      notes:'Run it in pi with pi-subagents installed. The FleetView under the editor shows the workers as they run; open /subagents-fleet full screen to read a worker’s transcript, steer it or stop it. If someone shares a good task out loud, you can use it instead of the prepared one. Read the lead’s combined result aloud. Backup: C.',
       html:function(){
         function w(t, d, tag){ return '<div class="card worker"><span class="pill">' + tag + '</span><b>' + t + '</b><span>' + d + '</span></div>'; }
         return '<div class="pad"><span class="live">LIVE DEMO</span><h2 class="h1">A crew of DAVEs</h2>' +
@@ -1362,14 +1204,12 @@ button{font:inherit; color:inherit}
     },
     { // 38
       sec:'G', title:'When to send a crew', steps:2,
-      notes:'Honest trade-offs. On a shared local endpoint, every worker is another request in the queue, so more workers can mean a slower answer for everyone in the room.',
       html:function(){ return padded('finale / trade-offs', 'When to send a crew',
         '<div class="vs2"><div class="card" data-step="1"><h3 class="h3 ok">A crew helps</h3><ul class="ticks"><li>Research across several sources</li><li>A draft plus an independent review</li><li>Subtasks that don’t depend on each other</li></ul></div>' +
         '<div class="card" data-step="2"><h3 class="h3">One DAVE is better</h3><ul class="ticks"><li>Short tasks</li><li>Steps that depend on the last one</li><li>Limited compute: every worker is another request in the queue</li></ul></div></div>', 38, 'Finale'); }
     },
     { // 39
       sec:'G', title:'Mission control: pi-agent-hub', steps:1,
-      notes:'One slide, kept short. pi-agent-hub is what you’d use after today, once you run several separate DAVEs on different projects. It isn’t part of DAVE and doesn’t run any work itself: it keeps pi sessions alive in tmux and shows them in one keyboard-driven list, sorted by who needs you. It needs tmux. Its README says it shows child agents from a different extension (pi-tmux-subagents), so don’t promise it displays today’s pi-subagents crew.',
       html:function(){ return padded('finale / mission control', 'Mission control for many DAVEs',
         '<div class="split"><div class="col">' +
           '<div class="term hubmock" role="img" aria-label="Example pi-agent-hub dashboard with sessions grouped by status">' +
@@ -1390,7 +1230,6 @@ button{font:inherit; color:inherit}
     },
     { // 40
       sec:'H', title:'What you built', steps:0, assembleOnEnter:true,
-      notes:'Callback to the anatomy slide; DAVE assembles one last time. "You now know what’s inside every agent framework."',
       html:function(){ return '<div class="title"><div class="t-left">' +
         '<p class="eyebrow">wrap / what you built</p><h2 class="hero" style="font-size:5.6cqw">You built a <span style="white-space:nowrap">co-worker.</span></h2>' +
         '<p class="sub">Ten parts. Every agent framework has them.</p>' +
@@ -1399,7 +1238,6 @@ button{font:inherit; color:inherit}
     },
     { // 41
       sec:'H', title:'Take DAVE home', steps:0,
-      notes:'Everything is in the repo: DAVE’s config, the starter skills, the build-your-own guide for running him on a laptop with a hosted model, and an offline copy of this deck.',
       html:function(){ return padded('wrap / take-home', 'Take DAVE home',
         '<div class="turn"><div class="leave">' +
           '<div class="card"><span class="ic">01</span><div><b>The starter repo</b><span class="mono">github.com/thesawdawg/agent-dave</span></div></div>' +
@@ -1409,7 +1247,6 @@ button{font:inherit; color:inherit}
     },
     { // 42
       sec:'H', title:'Where to take it next', steps:0,
-      notes:'Goal one: a concrete next step for every kind of attendee. Ask: "Which of these would you build first?"',
       html:function(){
         function r(who, what, parts){ return '<div class="card role"><span class="pill">' + who + '</span><b>' + what + '</b><div class="tags">' + parts.map(function(p){ return '<span class="pill lit">' + p + '</span>'; }).join('') + '</div></div>'; }
         return padded('wrap / next steps', 'Where to take it next',
@@ -1422,7 +1259,6 @@ button{font:inherit; color:inherit}
     },
     { // 43
       sec:'H', title:'Thank you', steps:0,
-      notes:'Leave this up during questions.',
       html:function(){ return '<div class="title"><div class="t-left" style="justify-content:center; padding-top:0">' +
         '<p class="eyebrow">beyond the prompt / advanced workshop 1</p><h2 class="hero">Thank you.</h2>' +
         '<p class="sub">Questions? DAVE and I are both listening.</p>' +
@@ -1434,8 +1270,7 @@ button{font:inherit; color:inherit}
   // Display numbers. A slide with num (like 29b) keeps the slides after it on their old numbers.
   var NOS = (function(){ var k = -1; return SLIDES.map(function(s){ return s.num || String(++k); }); })();
   function slideIndex(no){ var i = NOS.indexOf(String(no)); return i < 0 ? parseInt(no, 10) : i; }
-  var CLIPS = { teaser:null, skill:null, world:null, guard:null, judge:null, upgrade:null, crew:null }; // fill with uploaded clip URLs once recorded; C plays these first
-  /* ================= Demo replays (C when no recording is linked; Shift+C always) =================
+    /* ================= Demo replays (C on demo slides) =================
      Each line: [kind, text, delay ms before it appears]. Kinds: you (typed prompt), cmd (typed /command),
      dave (DAVE's reply), think, tool, out (tool output), sys (pi notice), file (a file DAVE wrote). */
   var REPLAYS = {
@@ -1572,53 +1407,32 @@ button{font:inherit; color:inherit}
     if (t <= skip) end(); else rpTimers.push(setTimeout(end, t - skip));
   }
 
-  /* ================= Idea wall (A on slides 5 and 29) ================= */
-  var SAMPLE_ANSWERS = {
-    s5: ['Turn my meeting notes into action items and reminders', 'Find this month’s AI events on campus and put the good ones on my calendar', 'Draft first replies to routine student emails', 'Summarize the week’s changes across our project repos', 'Check my syllabus against the required university policies', 'Pull the numbers for our monthly report from three spreadsheets', 'Turn a pile of survey comments into themes', 'Build a reading list on a new research topic', 'Reformat the citations in my paper to APA', 'Keep our lab inventory list up to date'],
-    s29: ['Read any file in my project folder', 'Draft emails, but never send them', 'Create new files, but ask before deleting anything', 'Search the web and campus pages', 'Save events to a calendar file', 'Run read-only git commands like status and log', 'Rename files in a folder I point him to', 'Nothing that leaves my machine without a yes from me']
-  };
-  function answersFor(key){ var a = state.ans && state.ans[key]; return a && a.text ? a.text.split(/\n+/).map(function(x){ return x.trim(); }).filter(Boolean) : []; }
-  function renderAnswers(ov, s){
-    var list = answersFor(s.ansKey).slice(0, 12), a = state.ans[s.ansKey] || {};
-    ov.className = 'ov ansov';
-    ov.innerHTML = '<div class="anshead"><p class="eyebrow">some ideas to get us started</p><h2 class="anstitle">' + esc(s.ansTitle) + '</h2></div>' +
-      '<div class="answall">' + list.map(function(x){ return '<div class="card ans">' + esc(x.length > 120 ? x.slice(0, 119) + '…' : x) + '</div>'; }).join('') + '</div>';
-  }
-
-
-  /* ================= State + sync ================= */
-  var KEY = 'dave-deck-v1';
-  var state = {i:0, step:0, uth:false, black:false, clip:false, part:'brain', partStep:-1, asm:0, timer:{running:false, base:0, since:0}, cd:{endsAt:0}, formUrl:'', clipKind:'', clipAt:0, ans:{s5:{text:'', sample:false}, s29:{text:'', sample:false}}, showAns:false, v:0};
-  try { var saved = JSON.parse(localStorage.getItem(KEY) || 'null'); if (saved && typeof saved === 'object') state = Object.assign(state, saved); } catch (e) {}
-  state.i = Math.max(0, Math.min(SLIDES.length - 1, state.i | 0));
-  if (!state.ans || typeof state.ans !== 'object') state.ans = {};
-  ['s5', 's29'].forEach(function(k){ if (!state.ans[k]) state.ans[k] = {text:'', sample:false}; });
-  var chan = null;
-  try { chan = new BroadcastChannel('dave-deck'); } catch (e) {}
+  /* ================= State ================= */
+  // Remembers where you were in the deck, in this browser only.
+  var KEY = 'dave-deck-v2';
+  var state = {i:0, step:0, uth:false, clip:false, part:'brain', partStep:-1, asm:0, clipAt:0};
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || 'null'); if (saved && typeof saved === 'object') { state.i = saved.i | 0; state.step = saved.step | 0; } } catch (e) {}
+  state.i = Math.max(0, Math.min(SLIDES.length - 1, state.i));
+  state.step = Math.max(0, Math.min(SLIDES[state.i].steps || 0, state.step));
   var lastAsm = state.asm;
   function commit(patch){
-    Object.assign(state, patch); state.v = Date.now();
-    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
-    try { chan && chan.postMessage(state); } catch (e) {}
+    Object.assign(state, patch);
+    try { localStorage.setItem(KEY, JSON.stringify({i:state.i, step:state.step})); } catch (e) {}
     apply();
   }
-  function receive(s){ if (!s || typeof s !== 'object' || (s.v || 0) <= (state.v || 0)) return; state = Object.assign(state, s); apply(); }
-  if (chan) chan.onmessage = function(e){ receive(e.data); };
-  window.addEventListener('storage', function(e){ if (e.key === KEY) { try { receive(JSON.parse(e.newValue)); } catch (err) {} } });
 
   function reducedMotion(){ try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
 
   /* ================= Rendering ================= */
-  var mode = location.hash === '#presenter' ? 'presenter' : 'audience';
-  var aud = document.getElementById('aud'), stage = document.getElementById('stage'), pres = document.getElementById('pres');
-  var rendered = {i:-1, mode:'', formUrl:null};
+  var aud = document.getElementById('aud'), stage = document.getElementById('stage');
+  var rendered = {i:-1};
 
   function buildSlide(i, interactive){
     var s = SLIDES[i];
     var el = document.createElement('div');
     el.className = 'slide';
     el.innerHTML = s ? s.html(state) + (s.uth ? '<div class="uth">' + s.uth() + '</div>' : '') :
-      '<div class="end-slide"><div><p class="eyebrow">next up</p><p class="h1" style="margin-top:1cqw">End of deck</p><p class="lede" style="margin:1cqw auto 0">That\u2019s the whole deck.</p></div></div>';
+      '<div class="end-slide"><div><p class="eyebrow">next up</p><p class="h1" style="margin-top:1cqw">End of deck</p><p class="lede" style="margin:1cqw auto 0">That’s the whole deck.</p></div></div>';
     drawQR(el);
     if (s && s.anatomy) wireAnatomy(el, interactive);
     return el;
@@ -1705,147 +1519,44 @@ button{font:inherit; color:inherit}
     el.classList.toggle('uth-on', !!state.uth);
   }
 
-  var curEls = [];
+  var curEl = null;
   function apply(){
     var s = SLIDES[state.i];
-    var slideChanged = rendered.i !== state.i || rendered.mode !== mode || (s && s.qr && rendered.formUrl !== state.formUrl);
-    aud.hidden = mode !== 'audience'; pres.hidden = mode !== 'presenter';
-    document.getElementById('hint').hidden = mode !== 'audience';
-    if (slideChanged) {
+    if (rendered.i !== state.i) {
       asmTimers.forEach(clearTimeout); asmTimers = [];
-      curEls = [];
-      if (mode === 'audience') {
-        stage.innerHTML = ''; var el = buildSlide(state.i, true); stage.appendChild(el); curEls.push(el);
-        ensureOverlays();
-      } else {
-        var cur = document.getElementById('pvCur'), nxt = document.getElementById('pvNext');
-        cur.innerHTML = ''; nxt.innerHTML = '';
-        var c = buildSlide(state.i, true); cur.appendChild(c); curEls.push(c);
-        var n = buildSlide(state.i + 1, false); nxt.appendChild(n);
-        setSteps(n, 0);
-      }
-      if (s && s.assembleOnEnter && rendered.i !== state.i) curEls.forEach(assemble);
-      rendered.i = state.i; rendered.mode = mode; rendered.formUrl = state.formUrl;
+      stage.innerHTML = ''; curEl = buildSlide(state.i, true); stage.appendChild(curEl);
+      var ov = document.createElement('div'); ov.id = 'clipov'; ov.className = 'ov'; ov.hidden = true; stage.appendChild(ov);
+      if (s && s.assembleOnEnter) assemble(curEl);
+      rendered.i = state.i;
     }
-    curEls.forEach(function(el){ setSteps(el, state.step); if (s && s.anatomy) updateAnatomy(el, state.step); });
-    if (state.asm !== lastAsm) { lastAsm = state.asm; if (s && s.anatomy) curEls.forEach(assemble); }
-    if (mode === 'audience') {
-      document.getElementById('black').hidden = !state.black;
-      var clipOv = document.getElementById('clipov'), url = s && s.clip ? CLIPS[s.clip] : null;
-      if (state.clip && s && s.clip && state.clipKind === 'video' && url) {
-        stopReplay(); clipOv.dataset.rp = '';
-        if (!clipOv.querySelector('video')) { clipOv.className = 'ov'; clipOv.innerHTML = ''; var v = document.createElement('video'); v.src = url; v.muted = true; v.autoplay = true; v.playsInline = true; v.controls = false; clipOv.appendChild(v); }
-        clipOv.hidden = false;
-      } else if (state.clip && s && s.clip && REPLAYS[s.clip]) {
-        var sig = s.clip + ':' + state.clipAt;
-        if (clipOv.dataset.rp !== sig) { clipOv.dataset.rp = sig; playReplay(clipOv, s.clip, state.clipAt); }
-        clipOv.hidden = false;
-      } else { stopReplay(); clipOv.hidden = true; clipOv.innerHTML = ''; clipOv.className = 'ov'; clipOv.dataset.rp = ''; }
-      var ansOv = document.getElementById('ansov');
-      if (state.showAns && s && s.ansKey && answersFor(s.ansKey).length) {
-        var asig = s.ansKey + ':' + JSON.stringify(state.ans[s.ansKey]);
-        if (ansOv.dataset.sig !== asig) { ansOv.dataset.sig = asig; renderAnswers(ansOv, s); }
-        ansOv.hidden = false;
-      } else { ansOv.hidden = true; ansOv.dataset.sig = ''; }
-    } else { presenterChrome(); }
-    tick();
+    setSteps(curEl, state.step); if (s && s.anatomy) updateAnatomy(curEl, state.step);
+    if (state.asm !== lastAsm) { lastAsm = state.asm; if (s && s.anatomy) assemble(curEl); }
+    var clipOv = document.getElementById('clipov');
+    if (state.clip && s && s.clip && REPLAYS[s.clip]) {
+      var sig = s.clip + ':' + state.clipAt;
+      if (clipOv.dataset.rp !== sig) { clipOv.dataset.rp = sig; playReplay(clipOv, s.clip, state.clipAt); }
+      clipOv.hidden = false;
+    } else { stopReplay(); clipOv.hidden = true; clipOv.innerHTML = ''; clipOv.className = 'ov'; clipOv.dataset.rp = ''; }
   }
-  function ensureOverlays(){
-    ['black', 'clipov', 'ansov'].forEach(function(id){ if (!document.getElementById(id)) { var d = document.createElement('div'); d.id = id; d.className = 'ov'; d.hidden = true; stage.appendChild(d); } });
-    if (!document.getElementById('cdchip')) { var c = document.createElement('div'); c.id = 'cdchip'; c.hidden = true; c.innerHTML = '<span class="lbl">Hands-on</span><span class="v"></span>'; stage.appendChild(c); }
-  }
-
-  function fmt(ms){ var t = Math.max(0, Math.round(ms / 1000)), m = Math.floor(t / 60), sec = t % 60; return (m >= 60 ? Math.floor(m / 60) + ':' + String(m % 60).padStart(2, '0') : m) + ':' + String(sec).padStart(2, '0'); }
-  function hm(min){ var neg = min < 0; min = Math.abs(min); return (neg ? '-' : '') + Math.floor(min / 60) + ':' + String(min % 60).padStart(2, '0'); }
-  function elapsed(){ var t = state.timer; return t.base + (t.running ? Date.now() - t.since : 0); }
-
-  function presenterChrome(){
-    var s = SLIDES[state.i], sec = SEC[s.sec];
-    document.getElementById('pSec').textContent = sec.name;
-    document.getElementById('pPlan').textContent = 'Planned ' + hm(sec.start) + '–' + hm(sec.end) + ' · slide ' + NOS[state.i] + ' of ' + NOS[SLIDES.length - 1] + ' built';
-    document.getElementById('pNow').textContent = 'Now · ' + NOS[state.i] + ' · ' + s.title;
-    document.getElementById('pStep').textContent = s.steps ? 'step ' + state.step + ' of ' + s.steps : '';
-    var nx = SLIDES[state.i + 1];
-    document.getElementById('pNextName').textContent = nx ? NOS[state.i + 1] + ' · ' + nx.title : 'end of built slides';
-    document.getElementById('pNotes').textContent = s.notes;
-    document.getElementById('bUth').disabled = !s.uth; document.getElementById('bUth').classList.toggle('on', !!state.uth && !!s.uth);
-    var bc = document.getElementById('bClip'); bc.disabled = !s.clip; bc.classList.toggle('on', !!state.clip);
-    bc.textContent = !s.clip ? 'Backup (C)' : state.clip ? (state.clipKind === 'video' ? 'Stop recording (C)' : 'Stop replay (C)') : (CLIPS[s.clip] ? 'Play recording (C)' : 'Play replay (C)');
-    var ba = document.getElementById('bAns'); ba.disabled = !s.ansKey; ba.classList.toggle('on', !!state.showAns && !!s.ansKey);
-    ['s5', 's29'].forEach(function(k){ var t = document.getElementById(k === 's5' ? 'ans5' : 'ans29'); if (document.activeElement !== t) t.value = (state.ans[k] && state.ans[k].text) || ''; });
-    document.getElementById('bBlack').classList.toggle('on', !!state.black);
-    document.getElementById('pTimer').textContent = state.timer.running ? 'Pause clock' : (state.timer.base ? 'Resume clock' : 'Start clock');
-    var f = document.getElementById('formUrl'); if (f && document.activeElement !== f) f.value = state.formUrl || '';
-    var tr = document.getElementById('pTrack');
-    if (!tr.childElementCount) {
-      SECTIONS.filter(function(x){ return x.start >= 0; }).forEach(function(x){
-        var d = document.createElement('div'); d.className = 'sec'; d.dataset.id = x.id;
-        d.style.left = (x.start / 120 * 100) + '%'; d.style.width = ((x.end - x.start) / 120 * 100) + '%';
-        d.textContent = x.id; d.title = x.name; tr.appendChild(d);
-      });
-      var mk = document.createElement('div'); mk.className = 'mark'; mk.id = 'pMark'; tr.appendChild(mk);
-    }
-    tr.querySelectorAll('.sec').forEach(function(d){ d.classList.toggle('cur', d.dataset.id === s.sec); });
-    document.querySelectorAll('#cdBtns [data-cd]').forEach(function(b){ b.classList.toggle('pri', s.timer && +b.getAttribute('data-cd') === s.timer); });
-  }
-
-  function tick(){
-    var now = Date.now();
-    var cd = state.cd && state.cd.endsAt ? state.cd.endsAt - now : null;
-    if (mode === 'audience') {
-      var chip = document.getElementById('cdchip');
-      if (chip) {
-        chip.hidden = cd === null;
-        if (cd !== null) { chip.querySelector('.v').textContent = cd > 0 ? fmt(cd) : 'Time'; chip.classList.toggle('done', cd <= 0); }
-      }
-      return;
-    }
-    var e = elapsed(), min = e / 60000, s = SLIDES[state.i], sec = SEC[s.sec];
-    document.getElementById('pElapsed').textContent = fmt(e);
-    var pace = document.getElementById('pPace');
-    if (!state.timer.running && !state.timer.base) { pace.textContent = 'Clock not started'; pace.className = 'pace'; }
-    else if (sec.start < 0) { pace.textContent = 'Pre-show'; pace.className = 'pace'; }
-    else if (min > sec.end) { pace.textContent = Math.ceil(min - sec.end) + ' min behind'; pace.className = 'pace behind'; }
-    else if (min < sec.start - 1) { pace.textContent = Math.floor(sec.start - min) + ' min ahead'; pace.className = 'pace ahead'; }
-    else { pace.textContent = 'On time · ' + Math.max(0, Math.floor(sec.end - min)) + ' min left in section'; pace.className = 'pace ok'; }
-    var mk = document.getElementById('pMark'); if (mk) mk.style.left = Math.min(100, Math.max(0, min / 120 * 100)) + '%';
-    document.getElementById('cdRead').textContent = cd === null ? 'off' : (cd > 0 ? fmt(cd) : 'time is up');
-  }
-  setInterval(tick, 500);
 
   /* ================= Navigation ================= */
   function go(d){
     var s = SLIDES[state.i];
     if (d > 0) {
       if (state.step < (s.steps || 0)) return commit({step:state.step + 1});
-      if (state.i < SLIDES.length - 1) return commit({i:state.i + 1, step:0, uth:false, clip:false, showAns:false});
+      if (state.i < SLIDES.length - 1) return commit({i:state.i + 1, step:0, uth:false, clip:false});
     } else {
       if (state.step > 0) return commit({step:state.step - 1});
-      if (state.i > 0) { var p = SLIDES[state.i - 1]; return commit({i:state.i - 1, step:p.steps || 0, uth:false, clip:false, showAns:false}); }
+      if (state.i > 0) { var p = SLIDES[state.i - 1]; return commit({i:state.i - 1, step:p.steps || 0, uth:false, clip:false}); }
     }
   }
-  function jump(i){ i = Math.max(0, Math.min(SLIDES.length - 1, i)); commit({i:i, step:0, uth:false, clip:false, showAns:false}); }
+  function jump(i){ i = Math.max(0, Math.min(SLIDES.length - 1, i)); commit({i:i, step:0, uth:false, clip:false}); }
   function toggleUth(){ if (SLIDES[state.i].uth) commit({uth:!state.uth}); }
-  function toggleClip(forceReplay){
+  function toggleClip(){
     var s = SLIDES[state.i]; if (!s.clip) return;
     if (state.clip) return commit({clip:false});
-    var kind = !forceReplay && CLIPS[s.clip] ? 'video' : 'replay';
-    if (kind === 'replay' && !REPLAYS[s.clip]) return toast('No backup has been added for this demo yet.');
-    commit({clip:true, clipKind:kind, clipAt:Date.now()});
-  }
-  function toggleAns(){
-    var s = SLIDES[state.i]; if (!s.ansKey) return;
-    if (!state.showAns && !answersFor(s.ansKey).length) return toast('No answers yet. Paste reviewed answers, or use sample ideas, in the presenter console.');
-    commit({showAns:!state.showAns});
-  }
-  function toggleTimer(){
-    var t = state.timer;
-    commit({timer: t.running ? {running:false, base:t.base + Date.now() - t.since, since:0} : {running:true, base:t.base, since:Date.now()}});
-  }
-  function setMode(m){
-    mode = m;
-    try { history.replaceState(null, '', m === 'presenter' ? '#presenter' : location.pathname + location.search); } catch (e) {}
-    rendered.mode = ''; apply();
+    if (!REPLAYS[s.clip]) return toast('There’s no replay for this demo.');
+    commit({clip:true, clipAt:Date.now()});
   }
   var toastT;
   function toast(msg){ var t = document.getElementById('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(function(){ t.hidden = true; }, 2600); }
@@ -1867,16 +1578,11 @@ button{font:inherit; color:inherit}
     else if (k === 'ArrowLeft' || k === 'PageUp' || k === 'ArrowUp' || k === 'Backspace') { go(-1); e.preventDefault(); }
     else if (k === 'Home') { jump(0); e.preventDefault(); }
     else if (k === 'End') { jump(SLIDES.length - 1); e.preventDefault(); }
-    else if (k === 'p' || k === 'P') setMode(mode === 'presenter' ? 'audience' : 'presenter');
     else if (k === 'f' || k === 'F') fullscreen();
     else if (k === 'u' || k === 'U') toggleUth();
-    else if (k === 'c' || k === 'C') toggleClip(e.shiftKey);
-    else if (k === 'a' || k === 'A') toggleAns();
-    else if (k === 'b' || k === 'B' || k === '.') commit({black:!state.black});
-    else if (k === 't' || k === 'T') toggleTimer();
-    else if (k === 'h' || k === 'H') { var ts = SLIDES[state.i].timer; if (ts) commit({cd:{endsAt:Date.now() + ts * 60000}}); }
+    else if (k === 'c' || k === 'C') toggleClip();
     else if (k === '?') showHelp(true);
-    else if (k === 'Escape') { if (state.clip || state.uth || state.black || state.showAns) commit({clip:false, uth:false, black:false, showAns:false}); }
+    else if (k === 'Escape') { if (state.clip || state.uth) commit({clip:false, uth:false}); }
   });
   stage.addEventListener('click', function(e){
     if (e.target.closest('button, [role="button"], .part, a')) return;
@@ -1885,46 +1591,7 @@ button{font:inherit; color:inherit}
   });
   var idleT;
   document.addEventListener('mousemove', function(){ aud.classList.remove('idle'); clearTimeout(idleT); idleT = setTimeout(function(){ aud.classList.add('idle'); }, 2500); });
-
-  document.getElementById('bPrev').onclick = function(){ go(-1); };
-  document.getElementById('bNext').onclick = function(){ go(1); };
-  document.getElementById('bUth').onclick = toggleUth;
-  document.getElementById('bClip').onclick = function(e){ toggleClip(e.shiftKey); };
-  document.getElementById('bAns').onclick = toggleAns;
-  var ansT = {};
-  function setAns(k, text, sample){ var a = Object.assign({}, state.ans); a[k] = {text:text, sample:sample}; commit({ans:a}); }
-  ['s5', 's29'].forEach(function(k){
-    var t = document.getElementById(k === 's5' ? 'ans5' : 'ans29');
-    t.addEventListener('input', function(){ var v = t.value; clearTimeout(ansT[k]); ansT[k] = setTimeout(function(){ setAns(k, v, false); }, 500); });
-  });
-  pres.addEventListener('click', function(e){
-    var b = e.target.closest('[data-sample], [data-clear]'); if (!b) return;
-    var k = b.getAttribute('data-sample') || b.getAttribute('data-clear');
-    if (b.hasAttribute('data-sample')) setAns(k, SAMPLE_ANSWERS[k].join('\n'), true); else setAns(k, '', false);
-  });
-  document.getElementById('bBlack').onclick = function(){ commit({black:!state.black}); };
-  document.getElementById('bHelp').onclick = function(){ showHelp(true); };
   document.getElementById('helpClose').onclick = function(){ showHelp(false); };
-  document.getElementById('pTimer').onclick = toggleTimer;
-  var resetArmed = false, resetT;
-  document.getElementById('pReset').onclick = function(){
-    var b = this;
-    if (!resetArmed) { resetArmed = true; b.textContent = 'Confirm reset'; resetT = setTimeout(function(){ resetArmed = false; b.textContent = 'Reset'; }, 3000); return; }
-    clearTimeout(resetT); resetArmed = false; b.textContent = 'Reset';
-    commit({timer:{running:false, base:0, since:0}});
-  };
-  document.getElementById('cdBtns').addEventListener('click', function(e){
-    var b = e.target.closest('[data-cd]'); if (!b) return;
-    var m = +b.getAttribute('data-cd');
-    commit({cd:{endsAt: m ? Date.now() + m * 60000 : 0}});
-  });
-  var urlT;
-  if (document.getElementById('formUrl')) document.getElementById('formUrl').addEventListener('input', function(){
-    var v = this.value.trim();
-    clearTimeout(urlT);
-    urlT = setTimeout(function(){ if (!v || /^https?:\/\//i.test(v)) commit({formUrl:v}); }, 600);
-  });
-  window.addEventListener('hashchange', function(){ var m = location.hash === '#presenter' ? 'presenter' : 'audience'; if (m !== mode) { mode = m; rendered.mode = ''; apply(); } });
 
   apply();
   var hint = document.getElementById('hint');

@@ -14,5 +14,5 @@ Thumbs.db
 # Secrets
 .env
 
-# Offline bundle: vendored pi packages (rebuilt by scripts/make-offline-bundle.sh)
+# Offline copy: vendored pi packages
 vendor/

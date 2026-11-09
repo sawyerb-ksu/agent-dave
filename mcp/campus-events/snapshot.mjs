@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Save the K-State calendar to data/snapshot.json so campus-events still works offline.
-// Run it while online, the week of the workshop:  npm run snapshot        (next 31 days)
+// Run it while online:  npm run snapshot        (next 31 days)
 //                                                 npm run snapshot -- 14  (next 14 days)
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";

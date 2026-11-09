@@ -20,7 +20,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// The presenter sets this before the workshop so attendees can just press Enter.
+// The studio address setup offers by default, so you can just press Enter.
 const DEFAULT_URL = "https://gpt.lib.k-state.edu";
 
 const PROVIDER = "aistudio";

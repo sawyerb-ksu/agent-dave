@@ -32,6 +32,6 @@ These leave real choices open, so DAVE should ask you instead of guessing:
 Finished early? Ask DAVE to build something small:
 - Write yourself an extension that adds a word_count tool, then /reload and use it on TROUBLESHOOTING.md.
 
-## A crew (finale, presenter's machine)
+## A crew (finale; needs pi-subagents)
 - Prepare my week. In parallel, have one worker find AI events on the K-State calendar for the next two weeks and another recap this week's repo and doc changes. Then have a writer turn both into a short team update.
 - In parallel, have one worker list next week's campus events and another summarize my meeting notes in samples/. Then have a writer draft a Monday email to my team.
