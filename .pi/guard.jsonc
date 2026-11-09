@@ -94,7 +94,8 @@
       "Ask first before committing, pushing or rewriting git history.",
     ],
     "allowAt": 0.8,             // the judge's "allow" counts only at 80% or more; below that, the guard asks you
-    "timeoutMs": 8000,
+    "timeoutMs": 8000,          // how long the judge gets to answer once its model is loaded
+    "coldStartMs": 30000,       // the first call, or the first after 30 idle minutes, loads the model first
     "ifUnavailable": "ask",     // judge down or too slow: "ask", "never" or "allow"
     // The strictest answer the judge may give. "ask": when it says never, you're asked instead of blocked,
     // so a model's mistake can't lock you out. "never": its never blocks. Your own "never" rules always block.

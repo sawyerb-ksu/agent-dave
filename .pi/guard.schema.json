@@ -172,7 +172,14 @@
         "timeoutMs": {
           "type": "number",
           "minimum": 100,
-          "default": 8000
+          "default": 8000,
+          "description": "How long the judge gets to answer once its model is loaded, in ms."
+        },
+        "coldStartMs": {
+          "type": "number",
+          "minimum": 100,
+          "default": 30000,
+          "description": "How long the judge gets when its model has to load first: the first call, or the first after 30 idle minutes. Never shorter than timeoutMs."
         },
         "ifUnavailable": {
           "enum": [

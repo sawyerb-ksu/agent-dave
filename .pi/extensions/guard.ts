@@ -18,7 +18,7 @@ import path from "node:path";
 
 type Mode = "allow" | "ask" | "never" | "check";
 type JudgeLink = { url: string; model: string; apiKey: string; from: string };
-type JudgeRules = { policy: string[]; allowAt: number; timeoutMs: number; ifUnavailable: Mode; maxVerdict: "ask" | "never"; override?: JudgeLink };
+type JudgeRules = { policy: string[]; allowAt: number; timeoutMs: number; coldStartMs: number; ifUnavailable: Mode; maxVerdict: "ask" | "never"; override?: JudgeLink };
 type Judge = JudgeLink & JudgeRules;
 type Dial = "ask-before-everything" | "ask-before-changes" | "ask-before-anything-leaves" | "just-do-it";
 type Rule = { command?: string[]; exact?: boolean; file?: string[]; tool?: string[]; access: "write" | "read" | "any"; mode: Mode; why: string; n: number };
@@ -29,7 +29,9 @@ const CONFIG = ".pi/guard.jsonc";
 // The judge's connection lives outside the repo, next to pi's own models.json, so a key never lands in git.
 const AGENT_DIR = process.env.PI_CODING_AGENT_DIR || path.join(os.homedir(), ".pi", "agent");
 const JUDGE_FILE = path.join(AGENT_DIR, "guard-judge.json");
-const JUDGE_DEFAULTS: JudgeRules = { policy: [], allowAt: 0.8, timeoutMs: 8000, ifUnavailable: "ask", maxVerdict: "never" };
+const JUDGE_DEFAULTS: JudgeRules = { policy: [], allowAt: 0.8, timeoutMs: 8000, coldStartMs: 30000, ifUnavailable: "ask", maxVerdict: "never" };
+// How long Ollama keeps the judge model loaded after a call. Past this, the next call loads it again.
+const KEEP_ALIVE_MIN = 30;
 const MODES = ["allow", "ask", "never", "check"];
 const DIALS = ["ask-before-everything", "ask-before-changes", "ask-before-anything-leaves", "just-do-it"];
 const SHELLS = new Set(["bash", "powershell"]);
@@ -131,10 +133,13 @@ function validate(raw: any, problems: string[]): Omit<Config, "source"> {
   if (j.maxVerdict !== undefined && j.maxVerdict !== "ask" && j.maxVerdict !== "never") {
     problems.push(`judge.maxVerdict: "${j.maxVerdict}" should be "ask" or "never"; using "never"`);
   }
+  const timeoutMs = Number(j.timeoutMs) > 0 ? Number(j.timeoutMs) : JUDGE_DEFAULTS.timeoutMs;
   const judgeRules: JudgeRules = {
     policy: list(j.policy) || [],
     allowAt: Number.isFinite(Number(j.allowAt ?? NaN)) ? Math.min(1, Math.max(0, Number(j.allowAt))) : 0.8,
-    timeoutMs: Number(j.timeoutMs) > 0 ? Number(j.timeoutMs) : 8000,
+    timeoutMs,
+    // A cold call loads the model first, so it gets longer. Never shorter than timeoutMs.
+    coldStartMs: Math.max(timeoutMs, Number(j.coldStartMs) > 0 ? Number(j.coldStartMs) : JUDGE_DEFAULTS.coldStartMs),
     ifUnavailable: ifUnavailable === "check" ? "ask" : ifUnavailable,
     // The strictest answer the judge may give. "ask" turns its "never" into a question for you.
     maxVerdict: j.maxVerdict === "ask" ? "ask" : "never",
@@ -248,11 +253,33 @@ const MAX_STATE_CHARS = 16000;
 const ALWAYS_ALLOW = "Always allow (save a rule)";
 const ALWAYS_BLOCK = "Always block (save a rule)";
 
+// When each judge (address + model) last answered. Until it has, or once Ollama's keep_alive
+// has run out, its model has to load first, so the call gets coldStartMs instead of timeoutMs.
+const lastAnswered = new Map<string, number>();
+
+/**
+ * Pick the time limit for the next call to a judge.
+ * @param judge The judge about to be called.
+ * @returns The limit in ms (coldStartMs if the model is probably unloaded, else timeoutMs) and whether it's cold.
+ */
+function judgeTimeout(judge: Judge): { ms: number; cold: boolean } {
+  const last = lastAnswered.get(`${judge.url} ${judge.model}`);
+  const cold = last === undefined || Date.now() - last > KEEP_ALIVE_MIN * 60_000;
+  return { ms: cold ? judge.coldStartMs : judge.timeoutMs, cold };
+}
+
+/**
+ * Ask the decision model what should happen with one tool call.
+ * @param judge The judge's connection and rules.
+ * @param call The tool call, as the "state" the judge reads.
+ * @returns The verdict (allow, ask or never, with probabilities) or an error saying why there is none.
+ */
 async function askJudge(judge: Judge, call: Record<string, unknown>): Promise<Verdict> {
   if (JSON.stringify(call).length > MAX_STATE_CHARS) return { error: "the call is too long for the judge to read" };
+  const limit = judgeTimeout(judge);
   const body = {
     model: judge.model,
-    keep_alive: "30m",
+    keep_alive: `${KEEP_ALIVE_MIN}m`,
     state: call,
     questions: {
       verdict: {
@@ -273,7 +300,7 @@ async function askJudge(judge: Judge, call: Record<string, unknown>): Promise<Ve
       method: "POST",
       headers: { "content-type": "application/json", ...(judge.apiKey ? { authorization: `Bearer ${judge.apiKey}` } : {}) },
       body: JSON.stringify(body),
-      signal: AbortSignal.timeout(judge.timeoutMs),
+      signal: AbortSignal.timeout(limit.ms),
     });
     if (!res.ok) {
       const err = (await res.json().catch(() => ({})))?.error;
@@ -287,13 +314,14 @@ async function askJudge(judge: Judge, call: Record<string, unknown>): Promise<Ve
     const p = answer?.probabilities || {};
     const pick = String(answer?.choice || "");
     if (!["allow", "ask", "never"].includes(pick)) return { error: "the judge's answer had no verdict" };
+    lastAnswered.set(`${judge.url} ${judge.model}`, Date.now());
     const pct = (k: string) => `${k} ${Math.round(100 * (Number(p[k]) || 0))}%`;
     const detail = `${judge.model}: ${pct("allow")} · ${pct("ask")} · ${pct("never")}`;
     // A narrow "allow" isn't good enough: below allowAt, ask a person instead.
     if (pick === "allow" && (Number(p.allow) || 0) < judge.allowAt) return { mode: "ask", detail: detail + ` (allow under ${Math.round(judge.allowAt * 100)}%)` };
     return { mode: pick as Mode, detail };
   } catch (err: any) {
-    return { error: err?.name === "TimeoutError" ? `the judge took longer than ${judge.timeoutMs} ms` : `couldn't reach the judge (${err?.cause?.code || err?.cause?.errors?.[0]?.code || err?.message || err})` };
+    return { error: err?.name === "TimeoutError" ? `the judge took longer than ${limit.ms} ms${limit.cold ? " to load (judge.coldStartMs)" : " (judge.timeoutMs)"}` : `couldn't reach the judge (${err?.cause?.code || err?.cause?.errors?.[0]?.code || err?.message || err})` };
   }
 }
 
@@ -491,7 +519,7 @@ export default function (pi: ExtensionAPI) {
 
   pi.on("session_start", async (_event, ctx) => {
     const { config } = load(ctx.cwd, ctx);
-    // Load the judge model now, so the first real check doesn't wait for it.
+    // Load the judge model now, so the first real check doesn't wait for it. Being cold, it gets coldStartMs.
     if (config.judge) void askJudge(config.judge, { tool: "bash", command: "ls", folder: ctx.cwd });
   });
 

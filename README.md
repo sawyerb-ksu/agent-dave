@@ -61,7 +61,7 @@ The judge has **its own connection**, separate from the model DAVE chats with. C
 Then `/guard judge` checks that it answers, `/guard test python3 -c "import os; os.remove('events.ics')"` shows its verdict and probabilities, and `/guard judge off` (or `./setup.sh --forget-judge`) disconnects it.
 
 - **Needs** a System One endpoint, such as Ollama 0.35.1 or newer with `ollama pull clef:27b` (or the smaller `clef-flash`). The guard calls `POST <address>/v1/systemone`; Open WebUI and plain chat endpoints don't serve it.
-- **Fails safe:** an `allow` under `allowAt` (80% by default) becomes ask, and if the judge is down or slow, `ifUnavailable` (ask by default) decides. With no judge connected, `check` just asks you.
+- **Fails safe:** an `allow` under `allowAt` (80% by default) becomes ask, and if the judge is down or slow, `ifUnavailable` (ask by default) decides. A loaded judge gets `timeoutMs` (8 s) to answer; when its model has to load first (the first call, or the first after 30 idle minutes), it gets `coldStartMs` (30 s). The guard also starts loading it when a session starts. With no judge connected, `check` just asks you.
 - **The judge flags, you decide:** `"maxVerdict": "ask"` (as shipped) turns the judge's `never` into a question, marked *the judge flagged it as dangerous*, without an *Always allow* option. The guard applies this after the answer, so it doesn't depend on the model following instructions. Set it to `"never"` to let the judge block. Your own `never` rules always block either way.
 - **One project, one judge:** a `"url"` (plus `"model"`, `"apiKey"`) written into the `"judge"` block of `.pi/guard.jsonc` wins over the saved connection.
 
