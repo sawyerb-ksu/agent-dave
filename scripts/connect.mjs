@@ -189,6 +189,24 @@ async function decisionModels(url, key) {
   } catch { return []; }
 }
 
+// Ollama loads models with 4096 tokens of context unless the model sets num_ctx, and /v1/systemone
+// ignores num_ctx in the request. Keep in step with MIN_JUDGE_CTX in .pi/extensions/guard.ts.
+const MIN_JUDGE_CTX = 16384;
+
+/**
+ * Read the context size a judge model loads with.
+ * @param {string} url The judge's address.
+ * @param {string} model The model name.
+ * @param {string} key The API key, or "".
+ * @returns {Promise<number | undefined>} num_ctx, 0 if the model sets none (Ollama's default), or undefined if unknown.
+ */
+async function judgeContext(url, model, key) {
+  try {
+    const info = await (await fetch(`${url}/api/show`, { method: "POST", headers: authHeaders(key), body: JSON.stringify({ model }), signal: AbortSignal.timeout(5000) })).json();
+    return Number(/^num_ctx\s+(\d+)/m.exec(String(info?.parameters || ""))?.[1] || 0);
+  } catch { return undefined; }
+}
+
 async function probeJudge(url, model, key) {
   const started = Date.now();
   try {
@@ -248,6 +266,11 @@ async function connectJudge() {
   say(`  Testing ${model} … (the first call loads the model, so it can take a moment)`);
   const probe = await probeJudge(url, model, resolved);
   if (probe.ok) ok(`The judge ${probe.message}`);
+  const ctx = await judgeContext(url, model, resolved);
+  if (ctx !== undefined && ctx < MIN_JUDGE_CTX) {
+    warn(`${model} loads with ${ctx || "Ollama's default (usually 4096)"} tokens of context, so long commands can be refused.`);
+    say(`  A copy with PARAMETER num_ctx ${MIN_JUDGE_CTX} fixes it; see "The judge's context is too small" in TROUBLESHOOTING.md.`);
+  }
   else {
     warn(`The judge didn't answer: ${probe.message}.`);
     const keep = (await ask("  Save it anyway? [y/N]: ")).toLowerCase();

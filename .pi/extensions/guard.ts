@@ -32,6 +32,9 @@ const JUDGE_FILE = path.join(AGENT_DIR, "guard-judge.json");
 const JUDGE_DEFAULTS: JudgeRules = { policy: [], allowAt: 0.8, timeoutMs: 8000, coldStartMs: 30000, ifUnavailable: "ask", maxVerdict: "never" };
 // How long Ollama keeps the judge model loaded after a call. Past this, the next call loads it again.
 const KEEP_ALIVE_MIN = 30;
+// The background warm-up's limit. Ollama drops a half-done load when the caller hangs up,
+// so the warm-up waits long enough for a slow CPU-only load to finish; nothing waits on it.
+const WARM_UP_MS = 5 * 60_000;
 const MODES = ["allow", "ask", "never", "check"];
 const DIALS = ["ask-before-everything", "ask-before-changes", "ask-before-anything-leaves", "just-do-it"];
 const SHELLS = new Set(["bash", "powershell"]);
@@ -250,6 +253,9 @@ type Verdict = { mode: Mode; detail: string } | { error: string };
 
 // Clef reads at most about 64K tokens and refuses longer input (413). Don't send what it can't read.
 const MAX_STATE_CHARS = 16000;
+// Ollama loads models with 4096 tokens of context unless the model sets num_ctx, and /v1/systemone
+// ignores num_ctx in the request. 16384 fits MAX_STATE_CHARS of plain text plus the policy.
+const MIN_JUDGE_CTX = 16384;
 const ALWAYS_ALLOW = "Always allow (save a rule)";
 const ALWAYS_BLOCK = "Always block (save a rule)";
 
@@ -272,11 +278,12 @@ function judgeTimeout(judge: Judge): { ms: number; cold: boolean } {
  * Ask the decision model what should happen with one tool call.
  * @param judge The judge's connection and rules.
  * @param call The tool call, as the "state" the judge reads.
+ * @param maxMs A fixed time limit in ms, instead of the cold or warm one (used by the warm-up).
  * @returns The verdict (allow, ask or never, with probabilities) or an error saying why there is none.
  */
-async function askJudge(judge: Judge, call: Record<string, unknown>): Promise<Verdict> {
+async function askJudge(judge: Judge, call: Record<string, unknown>, maxMs?: number): Promise<Verdict> {
   if (JSON.stringify(call).length > MAX_STATE_CHARS) return { error: "the call is too long for the judge to read" };
-  const limit = judgeTimeout(judge);
+  const limit = maxMs ? { ms: maxMs, cold: true } : judgeTimeout(judge);
   const body = {
     model: judge.model,
     keep_alive: `${KEEP_ALIVE_MIN}m`,
@@ -308,6 +315,7 @@ async function askJudge(judge: Judge, call: Record<string, unknown>): Promise<Ve
       if (res.status === 404) return { error: `the judge doesn't have ${judge.model} (ollama pull ${judge.model}, or /guard judge setup)` };
       if (res.status === 401 || res.status === 403) return { error: "the judge didn't accept its API key (/guard judge setup)" };
       if (res.status === 413) return { error: "the call is too long for the judge to read" };
+      if (/context length/i.test(said)) return { error: "the call is longer than the judge's context (num_ctx); see \"The judge's context is too small\" in TROUBLESHOOTING.md" };
       return { error: `the judge answered ${res.status}${said ? `: ${said.slice(0, 120)}` : ""}` };
     }
     const answer = (await res.json())?.answers?.verdict;
@@ -389,6 +397,32 @@ function catastropheIn(toolName: string, input: Record<string, unknown>, cwd: st
     if (SYSTEM_DIRS.test(given) || SYSTEM_DIRS.test(target)) return "change a file inside the operating system's own folders";
   }
   return undefined;
+}
+
+/**
+ * Read the context size a judge model loads with.
+ * @param link The judge's address, key and model.
+ * @returns num_ctx from the model's parameters, 0 if it sets none (Ollama's default, usually 4096), or undefined if unknown.
+ */
+async function judgeContext(link: JudgeLink): Promise<number | undefined> {
+  try {
+    const headers = { "content-type": "application/json", ...(link.apiKey ? { authorization: `Bearer ${link.apiKey}` } : {}) };
+    const info = await (await fetch(`${link.url}/api/show`, { method: "POST", headers, body: JSON.stringify({ model: link.model }), signal: AbortSignal.timeout(5000) })).json();
+    return Number(/^num_ctx\s+(\d+)/m.exec(String(info?.parameters || ""))?.[1] || 0);
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * Explain a judge context that's too small for the guard's longest calls.
+ * @param ctx The model's num_ctx, from judgeContext.
+ * @returns A warning line, or "" when the context is big enough or unknown.
+ */
+function contextWarning(ctx: number | undefined): string {
+  if (ctx === undefined || ctx >= MIN_JUDGE_CTX) return "";
+  return `! the model loads with ${ctx || "Ollama's default (usually 4096)"} tokens of context, so long commands can be refused. ` +
+    `A copy with PARAMETER num_ctx ${MIN_JUDGE_CTX} fixes it; see "The judge's context is too small" in TROUBLESHOOTING.md`;
 }
 
 // Ollama can say which of its models are decision models (capability "decision").
@@ -519,8 +553,9 @@ export default function (pi: ExtensionAPI) {
 
   pi.on("session_start", async (_event, ctx) => {
     const { config } = load(ctx.cwd, ctx);
-    // Load the judge model now, so the first real check doesn't wait for it. Being cold, it gets coldStartMs.
-    if (config.judge) void askJudge(config.judge, { tool: "bash", command: "ls", folder: ctx.cwd });
+    // Load the judge model now, so the first real check doesn't wait for it. It gets WARM_UP_MS, not
+    // coldStartMs: cutting a load short makes Ollama throw it away, and the next call would start over.
+    if (config.judge) void askJudge(config.judge, { tool: "bash", command: "ls", folder: ctx.cwd }, WARM_UP_MS);
   });
 
   // "Always allow" / "Always block": save a rule at the top of guard.jsonc, so the answer sticks.
@@ -655,6 +690,7 @@ export default function (pi: ExtensionAPI) {
 
       const link = { url, model, apiKey: resolvedKey, from: JUDGE_FILE };
       const result = await probe(link);
+      const ctxWarning = contextWarning(await judgeContext(link));
       if (result.startsWith("✗")) {
         const keep = await ctx.ui.select(`The judge didn't answer: ${result.slice(2)}\n\nSave it anyway?`, ["Save anyway", "Cancel"]);
         if (keep !== "Save anyway") return say("Nothing saved.", "warning");
@@ -670,6 +706,7 @@ export default function (pi: ExtensionAPI) {
       return say([
         `Judge connected: ${model} at ${url}${apiKey ? (apiKey.startsWith("$") ? ` (key from ${apiKey})` : " (with key)") : ""}`,
         `  ${result}`,
+        ctxWarning ? `  ${ctxWarning}` : "",
         `  saved to ${JUDGE_FILE}, outside this repo; DAVE's own model connection is unchanged`,
         routed ? `  commands no rule matches now go to the judge ("otherCommands": "check")` : `  the judge decides only where a rule says "mode": "check"`,
         config.judgeRules.override ? `  ! guard.jsonc sets judge.url, which wins over this connection` : "",
