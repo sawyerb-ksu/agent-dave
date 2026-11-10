@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Set up DAVE on Linux or macOS. Nothing here needs sudo.
 #
-#   ./setup.sh               install pi, Node.js and uv, then connect to the studio
+#   ./setup.sh               install pi, Node.js and uv, connect to the studio, then open VS Code
 #   ./setup.sh --forget-key  remove the saved studio key (run it on shared machines afterward)
 #   ./setup.sh --judge       connect the guard's judge, a separate decision model (advanced)
 #   ./setup.sh --forget-judge  remove the judge connection
@@ -19,6 +19,7 @@ step() { printf '\n\033[1m%s\033[0m\n' "$1"; }
 # Where the installers come from. Override only to use a local mirror.
 PI_INSTALL_URL="${PI_INSTALL_URL:-https://pi.dev/install.sh}"
 UV_INSTALL_URL="${UV_INSTALL_URL:-https://astral.sh/uv/install.sh}"
+VSCODE_MAC_URL="${VSCODE_MAC_URL:-https://update.code.visualstudio.com/latest/darwin-universal/stable}"
 
 # Everything goes in your home folder, where pi's own installer puts it.
 NODE_BIN="${XDG_DATA_HOME:-$HOME/.local/share}/pi-node/current/bin"
@@ -135,14 +136,51 @@ else
   warn "Couldn't install campus-events. Check the network, or use the offline bundle, then run ./setup.sh again."
 fi
 
-# ---------- 6. Connect to the studio ----------
-step "6. Connect to the studio"
+# ---------- 6. VS Code (where you edit DAVE and run pi) ----------
+step "6. VS Code"
+# On a Mac, VS Code's code command lives inside the app. Link it next to uv,
+# which is already on your PATH, so every terminal finds it.
+link_mac_code() { # link_mac_code <path to Visual Studio Code.app>
+  [ -x "$1/Contents/Resources/app/bin/code" ] && mkdir -p "$UV_BIN" && ln -sf "$1/Contents/Resources/app/bin/code" "$UV_BIN/code"
+}
+if ! command -v code >/dev/null 2>&1 && [ "$(uname -s)" = Darwin ]; then
+  for app in "/Applications/Visual Studio Code.app" "$HOME/Applications/Visual Studio Code.app"; do
+    [ -d "$app" ] && link_mac_code "$app" && ok "Added VS Code's code command, in $UV_BIN" && break
+  done
+  if ! command -v code >/dev/null 2>&1; then
+    # Not installed: unpack it into your own Applications folder, which needs no admin.
+    vscode_zip="$(mktemp "${TMPDIR:-/tmp}/vscode.XXXXXX")"
+    if curl -fsSL "$VSCODE_MAC_URL" -o "$vscode_zip" && mkdir -p "$HOME/Applications" &&
+       ditto -x -k "$vscode_zip" "$HOME/Applications" && link_mac_code "$HOME/Applications/Visual Studio Code.app"; then
+      ok "VS Code installed in ~/Applications"
+    fi
+    rm -f "$vscode_zip"
+  fi
+  hash -r
+fi
+if command -v code >/dev/null 2>&1; then
+  ok "VS Code is here"
+elif [ "$(uname -s)" = Darwin ]; then
+  warn "Couldn't install VS Code. Get it from https://code.visualstudio.com, then run ./setup.sh again."
+else
+  # Linux has no way to install VS Code without sudo that keeps its security sandbox on.
+  warn "VS Code isn't installed, and installing it needs an administrator: sudo snap install code --classic (Ubuntu), or the .deb or .rpm from https://code.visualstudio.com. On a studio machine, ask for help."
+fi
+
+# ---------- 7. Connect to the studio ----------
+step "7. Connect to the studio"
 node scripts/connect.mjs
 
 # ---------- Done ----------
 step "Done"
-command -v code >/dev/null 2>&1 || warn "VS Code's \`code\` command isn't on your PATH. Open this folder from VS Code with File > Open Folder."
-printf '\nOpen this folder in VS Code, then start DAVE in its terminal (Ctrl + `):\n\n'
-printf '  code .\n  pi\n\n'
+# Opened from here, VS Code starts with this script's PATH, so its terminal finds pi.
+# Skipped without a screen to open it on (an SSH session, for example).
+has_screen() { [ "$(uname -s)" = Darwin ] || [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]; }
+if command -v code >/dev/null 2>&1 && has_screen && code "$PWD" >/dev/null 2>&1; then
+  ok "Opened this folder in VS Code"
+  printf '\nIn its terminal (Ctrl + `), start DAVE:\n\n  pi\n\n'
+else
+  printf '\nOpen this folder in VS Code (File > Open Folder), then start DAVE in its terminal (Ctrl + `):\n\n  pi\n\n'
+fi
 printf 'Say yes when pi asks to trust this folder.\n'
 printf 'Using this terminal instead? Run  source %s  first, so it can find pi.\n' "$profile"

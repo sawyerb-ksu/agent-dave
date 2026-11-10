@@ -70,12 +70,13 @@ pi also supports many hosted providers directly. See [pi's provider docs](https:
 
 ## 3. Start DAVE
 
+Setup opens DAVE's folder in VS Code as its last step. If it isn't open, run `code ~/agent-dave`. Then, in VS Code's terminal (Ctrl + `):
+
 ```bash
-code ~/agent-dave
 pi
 ```
 
-Run `pi` in VS Code's terminal (Ctrl + `). Say yes when pi asks to trust the folder; that lets it load `.pi/`, where DAVE's settings, skills, MCP servers and guard live. Then say hello, and check `/model` shows the brain you picked.
+Say yes when pi asks to trust the folder; that lets it load `.pi/`, where DAVE's settings, skills, MCP servers and guard live. Then say hello, and check `/model` shows the brain you picked.
 
 Something not working? See [TROUBLESHOOTING.md](../TROUBLESHOOTING.md).
 

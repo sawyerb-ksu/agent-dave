@@ -12,7 +12,9 @@ Quick fixes for the things that most often go wrong in the workshop. If none of 
 | setup says this machine is missing `curl`, `tar` or `xz` | Those need an administrator to install. On a studio machine, ask for help; otherwise pair up for now. |
 | setup says *the studio didn't accept that key* | Type it again; it's easy to miss a character. Still failing? Ask for a spare key. |
 | setup says *no model list found there* | Check the studio address on your handout, including `https://`. |
-| `pi: command not found` right after setup | That terminal was open before pi was installed. Open a new terminal (VS Code's is fine), or run `source ~/.bashrc`. |
+| `pi: command not found` right after setup | That terminal was open before pi was installed. Open a new terminal (VS Code's is fine), or run `source ~/.bashrc`. On Windows, if VS Code was already open during setup, close every VS Code window and open the folder again. |
+| setup says *VS Code isn't installed* (Linux) | Installing it needs an administrator: `sudo snap install code --classic` on Ubuntu, or the .deb or .rpm from code.visualstudio.com. On a studio machine, ask for help. Then run setup again, or open the folder with `code ~/agent-dave`. |
+| setup didn't open VS Code | Open it yourself: `code ~/agent-dave`, or File > Open Folder in VS Code. Over SSH, setup doesn't try. |
 
 ## Starting DAVE
 

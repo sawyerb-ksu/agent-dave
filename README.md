@@ -95,6 +95,7 @@ No internet? campus-events falls back to a saved snapshot of the calendar on its
 ## You'll need
 
 - **Linux or macOS:** `git` and `curl` (and `xz` on Linux). Most machines have them.
+- **VS Code.** On macOS and Windows, setup installs it for you if it's missing, with no admin password. On Linux it needs an administrator (`sudo snap install code --classic` on Ubuntu), so setup tells you if it's missing.
 - **Windows:** PowerShell (built in). `git` helps for cloning; without it, download the repo as a ZIP from GitHub.
 - An API key for [Library GPT](https://gpt.lib.k-state.edu/), from your handout. Setup already knows the address.
 
@@ -116,14 +117,13 @@ cd agent-dave
 powershell -ExecutionPolicy Bypass -File setup.ps1
 ```
 
-Setup asks for the studio address (press Enter for Library GPT, `https://gpt.lib.k-state.edu`) and your key, checks them, reads the list of models the studio offers, and saves the connection in `~/.pi/agent/models.json` (readable only by you; other providers in that file are kept). It never starts pi. Then:
+Setup asks for the studio address (press Enter for Library GPT, `https://gpt.lib.k-state.edu`) and your key, checks them, reads the list of models the studio offers, and saves the connection in `~/.pi/agent/models.json` (readable only by you; other providers in that file are kept). It never starts pi. As its last step, it opens this folder in VS Code. Then run this in VS Code's terminal (Ctrl + `):
 
 ```bash
-code ~/agent-dave
 pi
 ```
 
-Run `pi` in VS Code's terminal (Ctrl + `). Say yes when pi asks to trust the folder; that lets it load `.pi/`.
+Say yes when pi asks to trust the folder; that lets it load `.pi/`. If VS Code didn't open, open it yourself with `code ~/agent-dave` (or File > Open Folder).
 
 Setup is safe to run again. On a shared machine, remove your key when you're done: `./setup.sh --forget-key` (Windows: `powershell -ExecutionPolicy Bypass -File setup.ps1 -ForgetKey`).
 

@@ -3,7 +3,7 @@
 
   Run it from the agent-dave folder, in PowerShell:
 
-    powershell -ExecutionPolicy Bypass -File setup.ps1              install pi, Node.js, Git Bash and uv, then connect
+    powershell -ExecutionPolicy Bypass -File setup.ps1              install pi, Node.js, Git Bash and uv, connect, then open VS Code
     powershell -ExecutionPolicy Bypass -File setup.ps1 -ForgetKey   remove the saved studio key (shared machines)
     powershell -ExecutionPolicy Bypass -File setup.ps1 -Judge       connect the guard's judge model (advanced)
     powershell -ExecutionPolicy Bypass -File setup.ps1 -ForgetJudge remove the judge connection
@@ -21,6 +21,8 @@ Set-Location $PSScriptRoot
 # Where the installers come from. Override only to use a local mirror.
 $PiInstallUrl = if ($env:PI_INSTALL_URL) { $env:PI_INSTALL_URL } else { "https://pi.dev/install.ps1" }
 $UvInstallUrl = if ($env:UV_INSTALL_URL) { $env:UV_INSTALL_URL } else { "https://astral.sh/uv/install.ps1" }
+$VsCodeArch = if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { "arm64" } else { "x64" }
+$VsCodeInstallUrl = if ($env:VSCODE_INSTALL_URL) { $env:VSCODE_INSTALL_URL } else { "https://update.code.visualstudio.com/latest/win32-$VsCodeArch-user/stable" }
 
 function Ok([string]$Message)   { Write-Host "  OK  $Message" -ForegroundColor Green }
 function Warn([string]$Message) { Write-Host "  !   $Message" -ForegroundColor Yellow }
@@ -54,7 +56,20 @@ function Update-ProcessPath {
   $machine = [Environment]::GetEnvironmentVariable("Path", "Machine")
   $env:PATH = (@($PiBin, $NodeDir, $UvBin, $user, $machine, $env:PATH) | Where-Object { $_ }) -join ";"
 }
+# The PATH this terminal (and any VS Code already running) started with.
+$StartPath = $env:PATH
 Update-ProcessPath
+
+function Find-VsCode {
+  # VS Code's code command: on PATH, or in the user or all-users install folder.
+  $cmd = Get-Command code.cmd -ErrorAction SilentlyContinue
+  if ($cmd) { return $cmd.Source }
+  foreach ($dir in @((Join-Path $env:LOCALAPPDATA "Programs\Microsoft VS Code"), (Join-Path $env:ProgramFiles "Microsoft VS Code"))) {
+    $cli = Join-Path $dir "bin\code.cmd"
+    if (Test-Path $cli) { return $cli }
+  }
+  return $null
+}
 
 function Test-NodeOk {
   if (-not (Get-Command node.exe -ErrorAction SilentlyContinue)) { return $false }
@@ -169,18 +184,54 @@ if ((Invoke-Quiet { & npm.cmd install --prefix mcp/campus-events --no-audit --no
   Warn "Couldn't install campus-events. Check the network, or use the offline bundle, then run setup again."
 }
 
-# ---------- 7. Connect to the studio ----------
-Step "7. Connect to the studio"
+# ---------- 7. VS Code (where you edit DAVE and run pi) ----------
+Step "7. VS Code"
+$Code = Find-VsCode
+if ($Code) {
+  Ok "VS Code is here"
+} else {
+  # The user installer needs no administrator rights. addtopath puts code on your PATH;
+  # !runcode keeps it from opening VS Code before setup is finished.
+  $VsSetup = Join-Path ([IO.Path]::GetTempPath()) "vscode-setup-$PID.exe"
+  try {
+    Invoke-WebRequest -UseBasicParsing -Uri $VsCodeInstallUrl -OutFile $VsSetup
+    $run = Start-Process -FilePath $VsSetup -ArgumentList "/VERYSILENT", "/NORESTART", "/MERGETASKS=!runcode,addtopath" -Wait -PassThru
+    if ($run.ExitCode -ne 0) { Warn "VS Code's installer stopped with exit code $($run.ExitCode)." }
+  } catch { Warn "Couldn't download VS Code. Check the network." }
+  Remove-Item $VsSetup -Force -ErrorAction SilentlyContinue
+  Update-ProcessPath
+  $Code = Find-VsCode
+  if ($Code) { Ok "VS Code installed" } else { Warn "Couldn't install VS Code. Get it from https://code.visualstudio.com, then run setup again." }
+}
+
+# ---------- 8. Connect to the studio ----------
+Step "8. Connect to the studio"
 & node.exe scripts\connect.mjs
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 # ---------- Done ----------
 Step "Done"
-if (-not (Get-Command code -ErrorAction SilentlyContinue)) { Warn "VS Code's code command isn't on your PATH. Open this folder from VS Code with File > Open Folder." }
+if ($Code) {
+  # A VS Code started from here gets this script's PATH, so its terminal finds pi.
+  # One that was already running keeps the PATH it started with.
+  $codeWasOpen = [bool](Get-Process Code -ErrorAction SilentlyContinue)
+  $piDir = Split-Path (Get-Command pi | Select-Object -First 1).Source
+  if ((Invoke-Quiet { & $Code . }) -eq 0) {
+    Ok "Opened this folder in VS Code"
+    if ($codeWasOpen -and -not (($StartPath -split ";") -contains $piDir)) {
+      Warn "VS Code was already open, so its terminals can't find pi yet. Close every VS Code window, then open this folder again."
+    }
+    Write-Host ""
+    Write-Host 'In its terminal (Ctrl + `), start DAVE:'
+  } else {
+    $Code = $null
+  }
+}
+if (-not $Code) {
+  Write-Host ""
+  Write-Host 'Open this folder in VS Code (File > Open Folder), then start DAVE in its terminal (Ctrl + `):'
+}
 Write-Host ""
-Write-Host "Open a new terminal (so it can find pi), then:"
-Write-Host ""
-Write-Host "  code ."
 Write-Host "  pi"
 Write-Host ""
 Write-Host "Say yes when pi asks to trust this folder."
