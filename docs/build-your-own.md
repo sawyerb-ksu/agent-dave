@@ -70,7 +70,7 @@ pi also supports many hosted providers directly. See [pi's provider docs](https:
 
 ## 3. Start DAVE
 
-Setup opens DAVE's folder in VS Code as its last step. If it isn't open, run `code ~/agent-dave`. Then, in VS Code's terminal (Ctrl + `):
+Setup opens DAVE's folder in VS Code as its last step, in a clean profile called DAVE (no extensions, built-in AI chat off). If it isn't open, run `code ~/agent-dave`. Then, in VS Code's terminal (Ctrl + `):
 
 ```bash
 pi

@@ -7,7 +7,8 @@ node_modules/
 events.md
 
 # Editors and OS
-.vscode/
+.vscode/*
+!.vscode/settings.json
 .DS_Store
 Thumbs.db
 

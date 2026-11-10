@@ -84,6 +84,7 @@ Want it tighter? Each of these is enforced by pi, not by the model:
 
 ### When you need a hand
 - **[ACTIVITIES.md](ACTIVITIES.md):** every hands-on activity from the workshop, step by step.
+- **[.vscode/settings.json](.vscode/settings.json):** keeps VS Code's built-in AI chat and its sidebar off in this folder. Delete its two chat lines to bring them back.
 - **[TROUBLESHOOTING.md](TROUBLESHOOTING.md):** quick fixes for setup, keys and errors.
 - **[checkpoints/](checkpoints/README.md):** the finished files for each loop, if you fall behind.
 - **[samples/](samples/):** practice inputs: messy meeting notes, prompts to try, skill ideas.
@@ -117,7 +118,7 @@ cd agent-dave
 powershell -ExecutionPolicy Bypass -File setup.ps1
 ```
 
-Setup asks for the studio address (press Enter for Library GPT, `https://gpt.lib.k-state.edu`) and your key, checks them, reads the list of models the studio offers, and saves the connection in `~/.pi/agent/models.json` (readable only by you; other providers in that file are kept). It never starts pi. As its last step, it opens this folder in VS Code. Then run this in VS Code's terminal (Ctrl + `):
+Setup asks for the studio address (press Enter for Library GPT, `https://gpt.lib.k-state.edu`) and your key, checks them, reads the list of models the studio offers, and saves the connection in `~/.pi/agent/models.json` (readable only by you; other providers in that file are kept). It never starts pi. As its last step, it opens this folder in VS Code, in its own profile called DAVE: no extensions, and VS Code's built-in AI chat turned off, so DAVE is the only AI in the window. Your usual VS Code setup isn't touched; switch profiles from the gear icon at the bottom left. Then run this in VS Code's terminal (Ctrl + `):
 
 ```bash
 pi
