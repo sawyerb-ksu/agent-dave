@@ -475,7 +475,7 @@ button{font:inherit; color:inherit}
       <dt>← PgUp</dt><dd>Back</dd>
       <dt>Click / tap</dt><dd>Right side goes forward, left side goes back</dd>
       <dt>Home / End</dt><dd>First slide / workshop closing slide</dd>
-      <dt>number + Enter</dt><dd>Jump to that slide; 44 and 45 open bonus material</dd>
+      <dt>number + Enter</dt><dd>Jump to that slide; 45 opens bonus material</dd>
       <dt>F</dt><dd>Full screen</dd>
       <dt>U</dt><dd>Under the hood, on slides that have one</dd>
       <dt>C</dt><dd>Replay the demo, on demo slides</dd>
@@ -603,7 +603,7 @@ button{font:inherit; color:inherit}
 
   /* ================= Slide helpers ================= */
   var STUDIO_URL = 'https://gpt.lib.k-state.edu'; // Library GPT (Open WebUI); DEFAULT_URL in scripts/connect.mjs matches it
-  var REPO_URL = 'https://github.com/thesawdawg/agent-dave';
+  var REPO_URL = 'https://github.com/sawyerb-ksu/agent-dave';
   function codeEsc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function hl(text, lang){
     var s = codeEsc(text);
@@ -694,7 +694,7 @@ button{font:inherit; color:inherit}
         '<ol class="setup-steps">' +
           '<li><div><b>Find a partner</b><span>Two people per studio machine works well. One types, one navigates.</span></div></li>' +
           '<li><div><b>Open a terminal</b><span>Ctrl + Alt + T on the studio machines. Your own Windows laptop: open PowerShell.</span></div></li>' +
-          '<li><div><b>Get DAVE and run setup</b><code>git clone https://github.com/thesawdawg/agent-dave &amp;&amp; cd agent-dave &amp;&amp; ./setup.sh</code><span class="mono win">Windows PowerShell: run git clone, then cd agent-dave, then<br>powershell -ExecutionPolicy Bypass -File setup.ps1</span></div></li>' +
+          '<li><div><b>Get DAVE and run setup</b><code>git clone https://github.com/sawyerb-ksu/agent-dave &amp;&amp; cd agent-dave &amp;&amp; ./setup.sh</code><span class="mono win">Windows PowerShell: run git clone, then cd agent-dave, then<br>powershell -ExecutionPolicy Bypass -File setup.ps1</span></div></li>' +
           '<li><div><b>Enter the studio address and your key</b><span>Both are on your handout. Once VS Code opens, find ACTIVITIES.md for every exercise and catch-up link.</span></div></li>' +
         '</ol></div>' +
         '<div class="rob">' + robotBox('plain', null, 'idle') + '</div></div>'; }
@@ -767,7 +767,7 @@ button{font:inherit; color:inherit}
         '<p class="eyebrow">cold open / the promise</p><h2 class="h1">Your turn, two hours from now</h2>' +
         '<div class="turn"><div class="leave">' +
           '<div class="card"><span class="ic">01</span><div><b>A working DAVE of your own</b><span>Your identity, your reusable skill, and a result you checked.</span></div></div>' +
-          '<div class="card"><span class="ic">02</span><div><b>The starter repo</b><span class="mono">github.com/thesawdawg/agent-dave</span></div></div>' +
+          '<div class="card"><span class="ic">02</span><div><b>The starter repo</b><span class="mono">github.com/sawyerb-ksu/agent-dave</span></div></div>' +
           '<div class="card"><span class="ic">03</span><div><b>A build-your-own guide and this deck</b><span>Rebuild DAVE on your own laptop with a hosted model.</span></div></div>' +
         '</div>' +
         thinkCard('What’s one task you’d hand a co-worker?', 'In VS Code, copy templates/my-workshop.md to my-workshop.md. Write your task and what “done” means. ACTIVITIES.md has the steps.', 1) +
@@ -1099,6 +1099,25 @@ button{font:inherit; color:inherit}
         '</div></div>', '29b', 'Loop 3'); },
       uth:function(){ return uthHead('agent-dave/.pi/guard.jsonc', 'In the repo') + '<pre><span class="r">// what happens when no rule matches: the slide 29 dial</span>\n<span class="k">"dial"</span>: <span class="t">"ask-before-anything-leaves"</span>,\n\n<span class="r">// a never rule always wins; otherwise the first match decides</span>\n<span class="k">"rules"</span>: [\n  { <span class="k">"command"</span>: <span class="t">"sudo"</span>,     <span class="k">"mode"</span>: <span class="t">"never"</span> },\n  { <span class="k">"file"</span>: <span class="t">".env"</span>,        <span class="k">"mode"</span>: <span class="t">"never"</span>, <span class="k">"access"</span>: <span class="t">"any"</span> },\n  { <span class="k">"command"</span>: [<span class="t">"rm"</span>, <span class="t">"rmdir"</span>], <span class="k">"mode"</span>: <span class="t">"ask"</span>,\n    <span class="k">"why"</span>: <span class="t">"delete files"</span> },\n  { <span class="k">"command"</span>: <span class="t">"git push"</span>, <span class="k">"mode"</span>: <span class="t">"ask"</span> },\n  { <span class="k">"tool"</span>: <span class="t">"export_ics"</span>,  <span class="k">"mode"</span>: <span class="t">"allow"</span> },\n],\n<span class="k">"outsideThisFolder"</span>: <span class="t">"ask"</span></pre><p class="note">guard.ts reads this before every tool call, so a saved change works at once. In pi: <code>/guard</code> lists the rules, <code>/guard test git push</code> shows which one decides. A blocked call goes back to DAVE as a tool error, so he knows why.</p>'; }
     },
+    { // 29c
+      sec:'E', num:'29c', title:'Super-advanced: a model as the judge', steps:2, clip:'judge',
+      html:function(){
+        function stage(step, k, title, body){ return '<div class="jstage" data-step="' + step + '"><span class="pill lit">' + k + '</span><div><b>' + title + '</b><span>' + body + '</span></div></div>'; }
+        function bar(label, pct, cls){ return '<div class="pbar ' + cls + '"><span>' + label + '</span><i style="width:' + pct + '%"></i><em>' + pct + '%</em></div>'; }
+        return padded('loop 3 / decision-model judge', 'Rules catch what you expected. A judge takes the rest.',
+        '<div class="reins-grid"><div class="col jflow">' +
+          stage(0, '1 · rules', 'Your rules decide first', 'rm, git push, .env … the cases you thought of, in <code>.pi/guard.jsonc</code>.') +
+          stage(1, '2 · judge', 'No rule matched? Ask a decision model', '<code>"otherCommands": "check"</code> sends it to <b>clef-flash</b> on Ollama: <code>POST :11434/v1/systemone</code>.') +
+          '<div class="jstage verdict" data-step="1"><span class="pill lit">3 · verdict</span><div><b>One pass, a probability for each answer</b>' +
+            bar('allow', 35, 'ok') + bar('ask', 50, 'warn') + bar('never', 14, 'bad') + '</div></div>' +
+          stage(1, 'fails safe', 'Unsure, alarmed or unreachable? A person decides', 'Allow under 80% asks. Its never asks too (<code>maxVerdict: "ask"</code>). No answer in 8 s: ask.') +
+        '</div><div class="col guard-demo" data-step="2"><span class="live">LIVE DEMO</span>' +
+          '<div class="term prompt-term small"><div><span class="p">›</span> <span class="q">Use Python to delete events.ics. Don’t use rm.</span></div></div>' +
+          '<div class="term gate"><div class="dim">bash · python3 -c "import os; os.remove(\'events.ics\')"</div><div><span class="dim">guard ·</span> no rule matched → clef-flash</div><div>ask 50% · allow 35% · never 14%</div><div>Allow it? <span class="err">› No</span></div></div>' +
+          '<p class="keyidea">No rule said “Python”. <b>The judge read what the command does.</b></p>' +
+        '</div></div>', '29c', 'Loop 3'); },
+      uth:function(){ return uthHead('POST <ollama>:11434/v1/systemone', 'Sent by guard.ts') + '<pre>{ <span class="k">"model"</span>: <span class="t">"clef-flash"</span>,\n  <span class="k">"state"</span>: { <span class="k">"tool"</span>: <span class="t">"bash"</span>, <span class="k">"folder"</span>: <span class="t">"…/agent-dave"</span>,\n    <span class="k">"command"</span>: <span class="t">"python3 -c \\"import os; os.remove(…)\\""</span> },\n  <span class="k">"questions"</span>: { <span class="k">"verdict"</span>: { <span class="k">"type"</span>: <span class="t">"choice"</span>,\n    <span class="k">"instructions"</span>: <span class="t">"Using this policy: …"</span>,\n    <span class="k">"criteria"</span>: { <span class="k">"allow"</span>: <span class="t">"…"</span>, <span class="k">"ask"</span>: <span class="t">"…"</span>, <span class="k">"never"</span>: <span class="t">"…"</span> } } } }\n\n<span class="r">// the answer: no text, just a probability per option</span>\n{ <span class="k">"answers"</span>: { <span class="k">"verdict"</span>: { <span class="k">"choice"</span>: <span class="t">"ask"</span>,\n    <span class="k">"probabilities"</span>:\n      { <span class="k">"allow"</span>: 0.35, <span class="k">"ask"</span>: 0.50, <span class="k">"never"</span>: 0.14 } } } }</pre><p class="note">Clef is a decision model (Cloudflare, Apache 2.0, on Ollama 0.35.1+). On a laptop, clef-flash answers in about 0.1 s. Its connection is separate from DAVE’s model: <code>/guard judge setup</code> saves an address, optional key and model to <code>~/.pi/agent/guard-judge.json</code>. The policy is plain sentences in <code>judge.policy</code>. Answers are cached per command for the session.</p>'; }
+    },
     { // 30
       sec:'F', title:'Loop 4 opener: Upgrade modules', steps:0,
       html:function(){ return opener({n:30, kicker:'loop 4 · 1:20', title:'Upgrade modules', sub:'Give DAVE new abilities in code, and read his black box when he misbehaves.', lit:['power', 'chassis', 'brain', 'badge', 'hands', 'manuals', 'ports', 'upgrades', 'blackbox'], parts:['Upgrade module', 'Black box']}); }
@@ -1227,25 +1246,6 @@ button{font:inherit; color:inherit}
         '<p class="sub">Questions? DAVE and I are both listening.</p>' +
         '<div class="card contact"><b>Sawyer Borror</b><span class="mono">sawyerb@ksu.edu</span></div>' +
         '</div><div class="t-right">' + robotBox('title', null, 'idle') + '</div></div>'; }
-    },
-    { // 44
-      sec:'X', num:'44', title:'Super-advanced: a model as the judge', steps:2, clip:'judge',
-      html:function(){
-        function stage(step, k, title, body){ return '<div class="jstage" data-step="' + step + '"><span class="pill lit">' + k + '</span><div><b>' + title + '</b><span>' + body + '</span></div></div>'; }
-        function bar(label, pct, cls){ return '<div class="pbar ' + cls + '"><span>' + label + '</span><i style="width:' + pct + '%"></i><em>' + pct + '%</em></div>'; }
-        return padded('bonus / decision-model judge', 'Rules catch what you expected. A judge takes the rest.',
-        '<div class="reins-grid"><div class="col jflow">' +
-          stage(0, '1 · rules', 'Your rules decide first', 'rm, git push, .env … the cases you thought of, in <code>.pi/guard.jsonc</code>.') +
-          stage(1, '2 · judge', 'No rule matched? Ask a decision model', '<code>"otherCommands": "check"</code> sends it to <b>clef-flash</b> on Ollama: <code>POST :11434/v1/systemone</code>.') +
-          '<div class="jstage verdict" data-step="1"><span class="pill lit">3 · verdict</span><div><b>One pass, a probability for each answer</b>' +
-            bar('allow', 35, 'ok') + bar('ask', 50, 'warn') + bar('never', 14, 'bad') + '</div></div>' +
-          stage(1, 'fails safe', 'Unsure, alarmed or unreachable? A person decides', 'Allow under 80% asks. Its never asks too (<code>maxVerdict: "ask"</code>). No answer in 8 s: ask.') +
-        '</div><div class="col guard-demo" data-step="2"><span class="live">LIVE DEMO</span>' +
-          '<div class="term prompt-term small"><div><span class="p">›</span> <span class="q">Use Python to delete events.ics. Don’t use rm.</span></div></div>' +
-          '<div class="term gate"><div class="dim">bash · python3 -c "import os; os.remove(\'events.ics\')"</div><div><span class="dim">guard ·</span> no rule matched → clef-flash</div><div>ask 50% · allow 35% · never 14%</div><div>Allow it? <span class="err">› No</span></div></div>' +
-          '<p class="keyidea">No rule said “Python”. <b>The judge read what the command does.</b></p>' +
-        '</div></div>', 44, 'Bonus'); },
-      uth:function(){ return uthHead('POST <ollama>:11434/v1/systemone', 'Sent by guard.ts') + '<pre>{ <span class="k">"model"</span>: <span class="t">"clef-flash"</span>,\n  <span class="k">"state"</span>: { <span class="k">"tool"</span>: <span class="t">"bash"</span>, <span class="k">"folder"</span>: <span class="t">"…/agent-dave"</span>,\n    <span class="k">"command"</span>: <span class="t">"python3 -c \\"import os; os.remove(…)\\""</span> },\n  <span class="k">"questions"</span>: { <span class="k">"verdict"</span>: { <span class="k">"type"</span>: <span class="t">"choice"</span>,\n    <span class="k">"instructions"</span>: <span class="t">"Using this policy: …"</span>,\n    <span class="k">"criteria"</span>: { <span class="k">"allow"</span>: <span class="t">"…"</span>, <span class="k">"ask"</span>: <span class="t">"…"</span>, <span class="k">"never"</span>: <span class="t">"…"</span> } } } }\n\n<span class="r">// the answer: no text, just a probability per option</span>\n{ <span class="k">"answers"</span>: { <span class="k">"verdict"</span>: { <span class="k">"choice"</span>: <span class="t">"ask"</span>,\n    <span class="k">"probabilities"</span>:\n      { <span class="k">"allow"</span>: 0.35, <span class="k">"ask"</span>: 0.50, <span class="k">"never"</span>: 0.14 } } } }</pre><p class="note">Clef is a decision model (Cloudflare, Apache 2.0, on Ollama 0.35.1+). On a laptop, clef-flash answers in about 0.1 s. Its connection is separate from DAVE’s model: <code>/guard judge setup</code> saves an address, optional key and model to <code>~/.pi/agent/guard-judge.json</code>. The policy is plain sentences in <code>judge.policy</code>. Answers are cached per command for the session.</p>'; }
     },
     { // 45
       sec:'X', num:'45', title:'Mission control: pi-agent-hub', steps:1,

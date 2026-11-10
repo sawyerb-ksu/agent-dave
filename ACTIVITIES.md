@@ -32,11 +32,11 @@ Fell behind? [checkpoints/](checkpoints/README.md) has the finished files for ea
 2. **Get DAVE and run setup.**
    - Linux or macOS:
      ```bash
-     git clone https://github.com/thesawdawg/agent-dave && cd agent-dave && ./setup.sh
+     git clone https://github.com/sawyerb-ksu/agent-dave && cd agent-dave && ./setup.sh
      ```
    - Windows PowerShell:
      ```powershell
-     git clone https://github.com/thesawdawg/agent-dave
+     git clone https://github.com/sawyerb-ksu/agent-dave
      cd agent-dave
      powershell -ExecutionPolicy Bypass -File setup.ps1
      ```

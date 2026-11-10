@@ -7,13 +7,13 @@ Everything from the workshop runs on your own computer. You need two things: thi
 Linux or macOS:
 
 ```bash
-git clone https://github.com/thesawdawg/agent-dave && cd agent-dave && ./setup.sh
+git clone https://github.com/sawyerb-ksu/agent-dave && cd agent-dave && ./setup.sh
 ```
 
 Windows (PowerShell):
 
 ```powershell
-git clone https://github.com/thesawdawg/agent-dave
+git clone https://github.com/sawyerb-ksu/agent-dave
 cd agent-dave
 powershell -ExecutionPolicy Bypass -File setup.ps1
 ```
