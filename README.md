@@ -118,7 +118,7 @@ cd agent-dave
 powershell -ExecutionPolicy Bypass -File setup.ps1
 ```
 
-Setup asks for the studio address (press Enter for Library GPT, `https://gpt.lib.k-state.edu`) and your key, checks them, reads the list of models the studio offers, and saves the connection in `~/.pi/agent/models.json` (readable only by you; other providers in that file are kept). It never starts pi. As its last step, it opens this folder in VS Code, in its own profile called DAVE: no extensions, and VS Code's built-in AI chat turned off, so DAVE is the only AI in the window. Your usual VS Code setup isn't touched; switch profiles from the gear icon at the bottom left. Then run this in VS Code's terminal (Ctrl + `):
+Setup asks for the studio address (press Enter for Library GPT, `https://gpt.lib.k-state.edu`) and your key, checks them, reads the list of models the studio offers, and saves the connection in `~/.pi/agent/models.json` (readable only by you; other providers in that file are kept). It never starts pi. As its last step, it opens this folder in VS Code, in its own profile called DAVE: no extensions, and VS Code's built-in AI chat turned off, so DAVE is the only AI in the window. It shows [READY.md](READY.md), a short *you're all set* page. Your usual VS Code setup isn't touched; switch profiles from the gear icon at the bottom left. Then run this in VS Code's terminal (Ctrl + `):
 
 ```bash
 pi

@@ -8,5 +8,8 @@
 
   // Start on the files, without the Welcome tab or extension suggestions.
   "workbench.startupEditor": "none",
-  "extensions.ignoreRecommendations": true
+  "extensions.ignoreRecommendations": true,
+
+  // Setup opens READY.md when it finishes; show it as a page, not as Markdown source.
+  "workbench.editorAssociations": { "READY.md": "vscode.markdown.preview.editor" }
 }

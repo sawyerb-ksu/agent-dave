@@ -37,6 +37,8 @@ Fell behind? [checkpoints/](checkpoints/README.md) has the finished files for ea
 
 Setup installs Node.js, pi and uv in your home folder, saves the studio connection, and opens DAVE's folder in VS Code, in a clean profile called DAVE with no extensions. It doesn't start pi; you do that in the next activity. Running it again is safe.
 
+**You should see:** VS Code opens on a *You're all set* page. Sit tight until we begin.
+
 - **`git clone` fails?** Ask for the offline copy, extract it, open a terminal in that folder and run setup.
 - **On a shared machine,** remove your key when you're done: `./setup.sh --forget-key` (Windows: `setup.ps1 -ForgetKey`).
 

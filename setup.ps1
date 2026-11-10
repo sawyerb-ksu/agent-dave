@@ -215,15 +215,16 @@ if ($Code) {
   # A VS Code started from here gets this script's PATH, so its terminal finds pi.
   # One that was already running keeps the PATH it started with.
   # The DAVE profile starts empty: no extensions, so nothing else competes with DAVE.
+  # READY.md is the "you're all set" page; .vscode/settings.json shows it rendered.
   $codeWasOpen = [bool](Get-Process Code -ErrorAction SilentlyContinue)
   $piDir = Split-Path (Get-Command pi | Select-Object -First 1).Source
-  if ((Invoke-Quiet { & $Code --profile DAVE . }) -eq 0) {
+  if ((Invoke-Quiet { & $Code --profile DAVE . READY.md }) -eq 0) {
     Ok "Opened this folder in VS Code, in its own DAVE profile"
     if ($codeWasOpen -and -not (($StartPath -split ";") -contains $piDir)) {
       Warn "VS Code was already open, so its terminals can't find pi yet. Close every VS Code window, then open this folder again."
     }
     Write-Host ""
-    Write-Host 'In its terminal (Ctrl + `), start DAVE:'
+    Write-Host 'When it''s time, start DAVE in its terminal (Ctrl + `):'
   } else {
     $Code = $null
   }

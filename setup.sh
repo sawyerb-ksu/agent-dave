@@ -175,11 +175,12 @@ node scripts/connect.mjs
 step "Done"
 # Opened from here, VS Code starts with this script's PATH, so its terminal finds pi.
 # The DAVE profile starts empty: no extensions, so nothing else competes with DAVE.
+# READY.md is the "you're all set" page; .vscode/settings.json shows it rendered.
 # Skipped without a screen to open it on (an SSH session, for example).
 has_screen() { [ "$(uname -s)" = Darwin ] || [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]; }
-if command -v code >/dev/null 2>&1 && has_screen && code --profile DAVE "$PWD" >/dev/null 2>&1; then
+if command -v code >/dev/null 2>&1 && has_screen && code --profile DAVE "$PWD" "$PWD/READY.md" >/dev/null 2>&1; then
   ok "Opened this folder in VS Code, in its own DAVE profile"
-  printf '\nIn its terminal (Ctrl + `), start DAVE:\n\n  pi\n\n'
+  printf '\nWhen it'"'"'s time, start DAVE in its terminal (Ctrl + `):\n\n  pi\n\n'
 else
   printf '\nOpen this folder in VS Code (File > Open Folder), then start DAVE in its terminal (Ctrl + `):\n\n  pi\n\n'
 fi
