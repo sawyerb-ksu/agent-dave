@@ -15,6 +15,7 @@ DAVE online · waiting for the workshop to begin
 
 - **Sharing a machine?** Pair up: one person types, the other navigates, and you swap each loop.
 - **Look around.** Everything DAVE is lives in this folder, on the left. [AGENTS.md](AGENTS.md) is who he is, and `.pi/` holds his settings, skills and tools.
+- **Find the exercises.** Keep [ACTIVITIES.md](ACTIVITIES.md) handy. We will copy [templates/my-workshop.md](templates/my-workshop.md) to record your task, checks and results.
 - **Don't start pi yet.** We'll wake DAVE up together in the first hands-on activity.
 
 ## Saw a yellow ! during setup?

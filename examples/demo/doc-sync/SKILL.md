@@ -7,8 +7,8 @@ description: Pull the latest main or master branch of every git repo
 ---
 # Doc sync
 
-Backup for slide 22 ("DAVE writes his own skill"). If DAVE's live attempt
-goes sideways, copy this folder to .pi/skills/ and start a new session.
+From slide 21 ("DAVE writes his own skill"). Copy this folder to
+.pi/skills/ and start a new session to try the workflow yourself.
 
 1. Ask for the projects folder and the docs folder if the user
    hasn't given them. Defaults: ~/Projects and ~/docs.

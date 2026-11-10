@@ -12,7 +12,7 @@ To try one, open it next to the repo's `AGENTS.md` in VS Code, copy its text in,
 
 | File | Slide | What it is |
 |---|---|---|
-| `demo/doc-sync/SKILL.md` | 22, DAVE writes his own skill | The skill DAVE wrote in the demo. Copy the `doc-sync` folder to `.pi/skills/`, start a new session and ask *"sync my docs"*. |
+| `demo/doc-sync/SKILL.md` | 21, DAVE writes his own skill | The skill DAVE wrote in the demo. Copy the `doc-sync` folder to `.pi/skills/`, start a new session and ask *"sync my docs"*. |
 | `demo/standup.ts` | 32, DAVE upgrades himself | The extension DAVE wrote in the demo. Copy it to `.pi/extensions/`, run `/reload`, then `/standup`. |
 
 Both are good models for writing your own skill or extension.

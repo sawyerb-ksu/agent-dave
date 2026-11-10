@@ -5,7 +5,7 @@ Fell behind, lost a file, or swapped machines? Each folder here holds the finish
 | Folder | After | What's inside | Goes to |
 |---|---|---|---|
 | `loop-1/` | Power up and ID badge (slides 14–16) | A finished `AGENTS.md` for a new co-worker | `AGENTS.md` |
-| `loop-2/` | Instruction manuals (slide 21) | A skill made from the template | `.pi/skills/student-email-reply/` |
+| `loop-2/` | Instruction manuals (slide 22) | A skill made from the template | `.pi/skills/student-email-reply/` |
 | `loop-3/` | The drone (slide 27) | The `events.ics` DAVE saves | the repo folder |
 | `loop-4/` | Upgrade modules (slide 34) | A small extension DAVE could write | `.pi/extensions/` |
 
@@ -19,6 +19,8 @@ Fell behind, lost a file, or swapped machines? Each folder here holds the finish
 To keep your own version, open both files side by side instead and copy just the parts you want.
 
 These files don't load from here. pi only reads `AGENTS.md`, `.pi/skills/` and `.pi/extensions/` at the top of the repo, so nothing in `checkpoints/` changes DAVE until you copy it.
+
+For the final task test on slide 39, the Loop 2 skill and [samples/student-email.md](../samples/student-email.md) are enough. Customize one instruction, run the task, check the draft against the email, then improve and rerun it. Record the result in `my-workshop.md`.
 
 ## Nothing works on your machine?
 

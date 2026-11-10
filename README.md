@@ -83,7 +83,8 @@ Want it tighter? Each of these is enforced by pi, not by the model:
 `events-scout`, `repo-reporter` and `writer`. Each worker lists only the tools it needs. They run when [pi-subagents](https://pi.dev/packages/pi-subagents) is installed: `pi install npm:pi-subagents`.
 
 ### When you need a hand
-- **[ACTIVITIES.md](ACTIVITIES.md):** every hands-on activity from the workshop, step by step.
+- **[ACTIVITIES.md](ACTIVITIES.md):** six timed activities totaling 55 minutes, including a final test of your own co-worker.
+- **[templates/my-workshop.md](templates/my-workshop.md):** copy to `my-workshop.md` to record your task, skill design, checks and result. Take your edited identity and skill home along with this file; the starter download does not include your changes.
 - **[.vscode/settings.json](.vscode/settings.json):** keeps VS Code's built-in AI chat and its sidebar off in this folder. Delete its two chat lines to bring them back.
 - **[TROUBLESHOOTING.md](TROUBLESHOOTING.md):** quick fixes for setup, keys and errors.
 - **[checkpoints/](checkpoints/README.md):** the finished files for each loop, if you fall behind.

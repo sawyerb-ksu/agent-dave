@@ -2,6 +2,8 @@
 
 Answer five short sets of questions and you'll have a working SKILL.md for a task you do over and over. It takes about 20 minutes.
 
+During the workshop's 14-minute skill activity (slide 22), use the four fields in [templates/my-workshop.md](../templates/my-workshop.md) and [ACTIVITIES.md](../ACTIVITIES.md#teach-dave-a-skill). This longer guide is for deeper practice afterward.
+
 A **skill** is a folder with one file, SKILL.md, that teaches an agent like Pi how to do one job your way. The top of the file tells Pi *when* to use it. The rest tells Pi *how*. The same file works in Pi, Claude, Codex, Copilot and other agents that support skills.
 
 **How to use this guide:** fill in each blank in Steps 1–4, then copy your answers into the template in Step 5. If you get stuck, the scan-renamer example at the end shows every blank filled in. It's the skill in [examples/kits/scan-renamer](../examples/kits/scan-renamer/README.md), so you can run it too.

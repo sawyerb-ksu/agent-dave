@@ -474,8 +474,8 @@ button{font:inherit; color:inherit}
       <dt>→ Space PgDn</dt><dd>Next step or slide</dd>
       <dt>← PgUp</dt><dd>Back</dd>
       <dt>Click / tap</dt><dd>Right side goes forward, left side goes back</dd>
-      <dt>Home / End</dt><dd>First / last slide</dd>
-      <dt>number + Enter</dt><dd>Jump to that slide</dd>
+      <dt>Home / End</dt><dd>First slide / workshop closing slide</dd>
+      <dt>number + Enter</dt><dd>Jump to that slide; 44 and 45 open bonus material</dd>
       <dt>F</dt><dd>Full screen</dd>
       <dt>U</dt><dd>Under the hood, on slides that have one</dd>
       <dt>C</dt><dd>Replay the demo, on demo slides</dd>
@@ -688,21 +688,21 @@ button{font:inherit; color:inherit}
     { // 0
       sec:'pre', title:'Get set up', steps:0,
       html:function(){ return '<div class="s-setup"><div class="pad">' +
-        '<p class="eyebrow">agent-dave / advanced-workshop-01 / before we start</p>' +
+        '<p class="eyebrow">ai-symposium-2026 / advanced-workshop-01 / before we start</p>' +
         '<h2 class="h1">Get set up</h2>' +
         '<p class="lede">Four steps while everyone arrives. No admin password needed.</p>' +
         '<ol class="setup-steps">' +
           '<li><div><b>Find a partner</b><span>Two people per studio machine works well. One types, one navigates.</span></div></li>' +
           '<li><div><b>Open a terminal</b><span>Ctrl + Alt + T on the studio machines. Your own Windows laptop: open PowerShell.</span></div></li>' +
           '<li><div><b>Get DAVE and run setup</b><code>git clone https://github.com/thesawdawg/agent-dave &amp;&amp; cd agent-dave &amp;&amp; ./setup.sh</code><span class="mono win">Windows PowerShell: run git clone, then cd agent-dave, then<br>powershell -ExecutionPolicy Bypass -File setup.ps1</span></div></li>' +
-          '<li><div><b>Enter the studio address and your key</b><span>Both are on your handout. Setup installs pi, Node.js and uv, then connects DAVE to the studio.</span></div></li>' +
+          '<li><div><b>Enter the studio address and your key</b><span>Both are on your handout. Once VS Code opens, find ACTIVITIES.md for every exercise and catch-up link.</span></div></li>' +
         '</ol></div>' +
         '<div class="rob">' + robotBox('plain', null, 'idle') + '</div></div>'; }
     },
     { // 1
       sec:'A', title:'Beyond the prompt.', steps:0,
       html:function(){ return '<div class="title"><div class="t-left">' +
-        '<p class="eyebrow">agent-dave / advanced-workshop-01</p>' +
+        '<p class="eyebrow">ai-symposium-2026 / advanced-workshop-01</p>' +
         '<h2 class="hero">Beyond the prompt.</h2>' +
         '<p class="sub">Build your own co-worker with pi.</p>' +
         '<div class="term" aria-label="Terminal preview"><div><span class="p">$</span> pi</div>' +
@@ -761,16 +761,16 @@ button{font:inherit; color:inherit}
         '<span class="k">assistant</span>\n  Done. Updated docs for 2 of 3 repos.</pre>'; }
     },
     { // 5
-      sec:'A', title:'Your turn, two hours from now', steps:1,
+      sec:'A', title:'Your turn, two hours from now', steps:1, ansKey:'s5', ansTitle:'One task you’d hand a co-worker',
       html:function(){
         return '<div class="pad">' +
         '<p class="eyebrow">cold open / the promise</p><h2 class="h1">Your turn, two hours from now</h2>' +
         '<div class="turn"><div class="leave">' +
-          '<div class="card"><span class="ic">01</span><div><b>A working DAVE of your own</b><span>Running on the studio model, with an identity you wrote.</span></div></div>' +
+          '<div class="card"><span class="ic">01</span><div><b>A working DAVE of your own</b><span>Your identity, your reusable skill, and a result you checked.</span></div></div>' +
           '<div class="card"><span class="ic">02</span><div><b>The starter repo</b><span class="mono">github.com/thesawdawg/agent-dave</span></div></div>' +
           '<div class="card"><span class="ic">03</span><div><b>A build-your-own guide and this deck</b><span>Rebuild DAVE on your own laptop with a hosted model.</span></div></div>' +
         '</div>' +
-        thinkCard('What’s one task you’d hand a co-worker?', 'Keep one in mind. You’ll build toward it today.', 1) +
+        thinkCard('What’s one task you’d hand a co-worker?', 'In VS Code, copy templates/my-workshop.md to my-workshop.md. Write your task and what “done” means. ACTIVITIES.md has the steps.', 1) +
         '</div>' +
         foot(5, 'Cold open') + '</div>'; }
     },
@@ -884,11 +884,11 @@ button{font:inherit; color:inherit}
       sec:'B', title:'The build plan', steps:0,
       html:function(){
         var stops = [
-          ['0:25', 'Loop 1 · Power up', 'Model, harness, identity, built-in tools', ['power', 'chassis', 'brain', 'badge', 'hands']],
-          ['0:45', 'Loop 2 · Manuals', 'Skills he loads when needed', ['power', 'chassis', 'brain', 'badge', 'hands', 'manuals']],
-          ['1:05', 'Loop 3 · Drone', 'MCP: reaching outside services', ['power', 'chassis', 'brain', 'badge', 'hands', 'manuals', 'ports']],
-          ['1:25', 'Loop 4 · Upgrades', 'Extensions and the black box', ['power', 'chassis', 'brain', 'badge', 'hands', 'manuals', 'ports', 'upgrades', 'blackbox']],
-          ['1:40', 'Finale · The fleet', 'A crew of DAVEs', null]
+          ['0:18', 'Loop 1 · Power up', 'Model, harness, identity, built-in tools', ['power', 'chassis', 'brain', 'badge', 'hands']],
+          ['0:38', 'Loop 2 · Manuals', 'Skills he loads when needed', ['power', 'chassis', 'brain', 'badge', 'hands', 'manuals']],
+          ['1:02', 'Loop 3 · Drone', 'MCP: reaching outside services', ['power', 'chassis', 'brain', 'badge', 'hands', 'manuals', 'ports']],
+          ['1:20', 'Loop 4 · Upgrades', 'Extensions and the black box', ['power', 'chassis', 'brain', 'badge', 'hands', 'manuals', 'ports', 'upgrades', 'blackbox']],
+          ['1:42', 'Your co-worker at work', 'Run, check, improve, share', null]
         ];
         return '<div class="pad">' +
         '<p class="eyebrow">blueprint / the build plan</p><h2 class="h1">Four loops, one robot</h2>' +
@@ -896,10 +896,9 @@ button{font:inherit; color:inherit}
         '<p class="swap"><span class="pill lit">pairs</span> Swap who’s typing <b>at every loop.</b></p>' +
         foot(11, 'The blueprint') + '</div>'; }
     },
-    /* ===================== Section C · Loop 1 ===================== */
     { // 12
       sec:'C', title:'Loop 1 opener: Power up', steps:0,
-      html:function(){ return opener({n:12, kicker:'loop 1 · 0:25', title:'Power up', sub:'Connect DAVE to the studio model and give him an identity.', lit:['power', 'chassis', 'brain', 'badge', 'hands'], parts:['Power supply', 'Brain', 'ID badge', 'Hands']}); }
+      html:function(){ return opener({n:12, kicker:'loop 1 · 0:18', title:'Power up', sub:'Connect DAVE to the studio model and give him an identity.', lit:['power', 'chassis', 'brain', 'badge', 'hands'], parts:['Power supply', 'Brain', 'ID badge', 'Hands']}); }
     },
     { // 13
       sec:'C', title:'Power supply and brain', steps:0,
@@ -919,11 +918,11 @@ button{font:inherit; color:inherit}
       uth:function(){ return uthHead() + '<pre><span class="r">// one turn, as it travels to the endpoint</span>\n<span class="k">POST</span> /api/chat/completions\n{\n  "model": "qwen3.8:27b-q8_0",\n  "messages": [ <span class="r">system, user, …</span> ],\n  "tools": [ <span class="r">read, write, edit, bash</span> ]\n}\n\n<span class="t">200 OK</span>\n{\n  "choices": [{ "message": {\n    "tool_calls": [{ "function": {\n      "name": "bash",\n      "arguments": "{\\"command\\": \\"ls\\"}"\n    }}]\n  }}]\n}</pre><p class="note">Every turn of the loop is one round trip like this. The model only sends text back; pi runs the tool.</p>'; }
     },
     { // 14
-      sec:'C', title:'Hands-on: Wake DAVE up', steps:0,
+      sec:'C', title:'Hands-on: Wake DAVE up', steps:0, timer:6,
       html:function(){ return handson({n:14, label:'Loop 1', title:'Wake DAVE up', min:6, steps:[
           ['Open DAVE’s folder in VS Code', 'code ~/agent-dave'],
           ['In VS Code’s terminal (Ctrl + `), start DAVE. Say yes when pi asks to trust the folder.', 'pi'],
-          ['Say hello', '“Hi DAVE. What can you do, and which model are you running on?”']
+          ['In pi, say hello; then open ACTIVITIES.md in VS Code', '“Hi DAVE. What can you do, and which model are you running on?”']
         ], check:'DAVE replies, and /model shows qwen3.8:27b-q8_0 selected.', tip:'Setup didn’t finish? Run ./setup.sh again in VS Code’s terminal. From here on, every file you change opens in VS Code.'}); }
     },
     { // 15
@@ -935,21 +934,19 @@ button{font:inherit; color:inherit}
           '<div class="annrow" data-step="1"><span class="pill lit">Role</span><span>Who DAVE is and where he works. One or two lines.</span></div>' +
           '<div class="annrow" data-step="1"><span class="pill lit">How you work</span><span>Habits you want on every task.</span></div>' +
           '<div class="annrow" data-step="2"><span class="pill lit">Tone</span><span>How he talks to people.</span></div>' +
-          '<div class="annrow" data-step="2"><span class="pill lit">Never</span><span>Hard limits. Short and specific.</span></div>' +
-          '<div class="card files" data-step="3"><b>Three files, three jobs</b>' +
-            '<p><code>AGENTS.md</code> adds context for a folder and everything below it.</p>' +
-            '<p><code>APPEND_SYSTEM.md</code> adds to pi’s base instructions.</p>' +
-            '<p><code>SYSTEM.md</code> replaces them entirely. Rarely needed.</p></div>' +
+          '<div class="annrow" data-step="2"><span class="pill lit">Never</span><span>Behavior requests. Enforcement comes from permissions.</span></div>' +
+          '<div class="card files" data-step="3"><b>Instructions guide. Permissions enforce.</b><p>The guard checks actions. AGENTS.md describes behavior.</p>' +
+            '<p>Keep <code>AGENTS.md</code> short. Its requests are loaded with your folder’s context.</p></div>' +
         '</div></div>', 15, 'Loop 1'); },
       uth:function(){ return uthHead('How pi builds it') + '<pre><span class="k">system prompt</span>\n  pi’s base instructions\n  <span class="r">+ APPEND_SYSTEM.md, if present</span>\n\n<span class="k">context files</span>, in order\n  ~/.pi/agent/AGENTS.md      <span class="r">global</span>\n  ../AGENTS.md               <span class="r">parent folders</span>\n  ./AGENTS.md                <span class="r">the repo: DAVE’s badge</span>\n\n<span class="k">skills</span>      name + description only\n<span class="k">tools</span>       read, write, edit, bash\n\n<span class="t">then the conversation</span></pre><p class="note">All of this is on the bench before you type a word.</p>'; }
     },
     { // 16
-      sec:'C', title:'Hands-on: Make DAVE yours', steps:0,
+      sec:'C', title:'Hands-on: Make DAVE yours', steps:0, timer:7,
       html:function(){ return handson({n:16, label:'Loop 1', title:'Make DAVE yours', min:7, steps:[
           ['In VS Code, open AGENTS.md at the top of the repo', null],
-          ['Rename your co-worker and give them a role from your work', null],
+          ['Give your co-worker a name and a role for the task in my-workshop.md', null],
           ['Add one rule under “How you work”, then save the file', null],
-          ['In the terminal, exit pi, start it again, and ask the same question as before', 'pi']
+          ['Exit pi to the shell, run pi again, and ask the same question as before', 'pi']
         ], check:'Same question, different co-worker: the answer fits the new role.', ideas:['Grant-writing helper', 'Lab notebook keeper', 'Course-site editor', 'Advising FAQ desk', 'Event planner']}); }
     },
     { // 17
@@ -964,11 +961,9 @@ button{font:inherit; color:inherit}
           c(3, 'CORA', 'Course-site editor', 'Post the week 9 readings. Students check the site on Sunday night.') +
         '</div><p class="illus">Examples. Same model, same tools; only the ID badge changed.</p>', 17, 'Loop 1'); }
     },
-
-    /* ===================== Section D · Loop 2 ===================== */
     { // 18
       sec:'D', title:'Loop 2 opener: Instruction manuals', steps:0,
-      html:function(){ return opener({n:18, kicker:'loop 2 · 0:45', title:'Instruction manuals', sub:'Teach DAVE a workflow once. He pulls it off the shelf when a task needs it.', lit:['power', 'chassis', 'brain', 'badge', 'hands', 'manuals'], parts:['Instruction manuals']}); }
+      html:function(){ return opener({n:18, kicker:'loop 2 · 0:38', title:'Instruction manuals', sub:'Teach DAVE a workflow once. He pulls it off the shelf when a task needs it.', lit:['power', 'chassis', 'brain', 'badge', 'hands', 'manuals'], parts:['Instruction manuals']}); }
     },
     { // 19
       sec:'D', title:'Progressive disclosure', steps:3,
@@ -996,20 +991,20 @@ button{font:inherit; color:inherit}
         '</div></div>', 20, 'Loop 2'); }
     },
     { // 21
-      sec:'D', title:'Hands-on: Teach DAVE a skill', steps:0,
-      html:function(){ return handson({n:21, label:'Loop 2', title:'Teach DAVE a skill', min:8, steps:[
-          ['Try a starter skill: paste messy notes and ask for minutes', null],
-          ['In VS Code, copy the templates/my-skill folder and paste it into .pi/skills', null],
-          ['In its SKILL.md, write a description that says when to use it, and 3 to 5 steps', null],
-          ['Start a fresh session and ask for the task without naming the skill', 'pi']
-        ], tip:'Stuck for an idea? Browse awesomeskill.ai for inspiration, or open samples/skill-ideas.md.',
-        check:'DAVE reads your SKILL.md on his own. To force it: /skill:my-skill'}); }
-    },
-    { // 22
       sec:'D', title:'WHOA: DAVE writes his own skill', steps:0, clip:'skill',
-      html:function(){ return demo({n:22, label:'Loop 2', title:'DAVE writes his own skill', lede:'Remember the repos and docs from the start? Let’s make it a habit.',
+      html:function(){ return demo({n:21, label:'Loop 2', title:'DAVE writes his own skill', lede:'Remember the repos and docs from the start? Let’s make it a habit.',
         prompt:'Save what you did with my repos and docs earlier as a skill called doc-sync, so you can do it again next week.',
         pills:['writes SKILL.md', 'fresh session', '“sync my docs”', 'finds it himself']}); }
+    },
+    { // 22
+      sec:'D', title:'Hands-on: Teach DAVE a skill', steps:0, timer:14,
+      html:function(){ return handson({n:22, label:'Loop 2', title:'Teach DAVE a skill', min:14, steps:[
+          ['In my-workshop.md, define input, output, 3 to 5 steps, and what never to invent', null],
+          ['Ask DAVE to draft .pi/skills/my-skill/SKILL.md, or copy templates/my-skill in VS Code', null],
+          ['Open the skill in VS Code. Review the trigger, steps, and output path; change one instruction', null],
+          ['Exit pi, run pi again, then request your task without naming the skill. Check the output', null]
+        ], tip:'Need a small task? Use samples/meeting-notes. /skill:my-skill helps diagnose discovery; then improve the description.',
+        check:'DAVE loads your skill and saves a useful result that matches your input. Record the path in my-workshop.md.'}); }
     },
     { // 23
       sec:'D', title:'When skills misfire', steps:3,
@@ -1019,14 +1014,12 @@ button{font:inherit; color:inherit}
         '<div class="fails three">' +
           f(1, 'It never fires', 'The description is vague: “Helps with notes.”', 'Say what it does and when: “Use when the user pastes meeting notes.”') +
           f(2, 'The wrong one fires', 'Two descriptions overlap, so DAVE guesses.', 'Make each description distinct, or merge the two skills.') +
-          f(3, 'It’s really a tool', 'It needs live data or an exact action, not instructions.', 'Make it a tool or connect an MCP server. That’s next.') +
+          f(3, 'A step needs an action', 'Instructions alone can’t fetch live data or change a file.', 'Keep the workflow in the skill. Use a tool for the action; connect it with MCP if needed.') +
         '</div>', 23, 'Loop 2'); }
     },
-
-    /* ===================== Section E · Loop 3 ===================== */
     { // 24
       sec:'E', title:'Loop 3 opener: The drone', steps:0,
-      html:function(){ return opener({n:24, kicker:'loop 3 · 1:05', title:'The drone', sub:'Send DAVE’s drone out to the web and campus data with MCP.', lit:['power', 'chassis', 'brain', 'badge', 'hands', 'manuals', 'ports'], parts:['Drone']}); }
+      html:function(){ return opener({n:24, kicker:'loop 3 · 1:02', title:'The drone', sub:'Send DAVE’s drone out to the web and campus data with MCP.', lit:['power', 'chassis', 'brain', 'badge', 'hands', 'manuals', 'ports'], parts:['Drone']}); }
     },
     { // 25
       sec:'E', title:'What MCP is', steps:2,
@@ -1046,32 +1039,36 @@ button{font:inherit; color:inherit}
           '<div class="tooldef good" data-step="1"><span class="tag">clear</span><p class="mono"><b>find_events</b>(start_date, end_date, keyword?)</p><p>“Find K-State calendar events between two dates (YYYY-MM-DD, up to 31 days), optionally matching a keyword. Returns id, title, times, location and link. Pass ids to export_ics.”</p></div>' +
           '<ul class="ticks small" data-step="1"><li>A name that says the action</li><li>Narrow, typed inputs</li><li>Errors that say how to fix the call</li></ul>' +
         '</div><div class="col" data-step="2">' +
-          '<h3 class="h3">How pi exposes MCP tools</h3>' +
-          '<div class="expo"><span class="pill lit">codemode</span><p><b>Default.</b> DAVE writes a short script that finds and calls the tools it needs.</p></div>' +
-          '<div class="expo"><span class="pill">deferred</span><p>Listed only after DAVE searches for one.</p></div>' +
-          '<div class="expo"><span class="pill">direct</span><p>Listed up front, like the built-in tools.</p></div>' +
-          '<p class="kicker" style="font-size:1.7cqw">Fewer, focused tools keep <em>the bench clear.</em></p>' +
+          '<h3 class="h3">A skill can use tools</h3>' +
+          '<p class="lede">The skill gives the workflow. Each tool performs one action.</p>' +
+          '<div class="expo"><span class="pill lit">campus-lookup</span><p>Find suitable events, check the details, then save an invite.</p></div>' +
+          '<div class="expo"><span class="pill">find_events</span><p>Gets live calendar data for one step.</p></div>' +
+          '<div class="expo"><span class="pill">export_ics</span><p>Writes the invite for another step.</p></div>' +
+          '<p class="kicker" style="font-size:1.7cqw">One workflow. <em>Focused actions.</em></p>' +
         '</div></div>', 26, 'Loop 3'); },
-      uth:function(){ return uthHead('Under the hood', 'From the repo') + '<pre><span class="r">// what the model reads for one tool</span>\n{\n  <span class="k">"name"</span>: "find_events",\n  <span class="k">"description"</span>: "Find K-State calendar events\n     between two dates (YYYY-MM-DD, up to 31\n     days), optionally matching a keyword.\n     Returns id, title, times, location and\n     link. Pass ids to export_ics.",\n  <span class="k">"inputSchema"</span>: {\n    "properties": {\n      "start_date": { "type": "string",\n        "description": "First day to search, YYYY-MM-DD" },\n      "end_date": { "type": "string", … },\n      "keyword": { "type": "string",\n        "description": "Words to match in the title,\n          description or location, e.g. \\"AI\\"" }\n    },\n    "required": ["start_date", "end_date"]\n  }\n}</pre><p class="note">This is the real definition from <code>mcp/campus-events</code>, and it’s all the model knows about the tool. If it isn’t here, DAVE can’t guess it.</p>'; }
+      uth:function(){ return uthHead('Under the hood', 'From the repo') + '<pre><span class="r">// what the model reads for one tool</span>\n{\n  <span class="k">"name"</span>: "find_events",\n  <span class="k">"description"</span>: "Find K-State calendar events\n     between two dates (YYYY-MM-DD, up to 31\n     days), optionally matching a keyword.\n     Returns id, title, times, location and\n     link. Pass ids to export_ics.",\n  <span class="k">"inputSchema"</span>: {\n    "properties": {\n      "start_date": { "type": "string",\n        "description": "First day to search, YYYY-MM-DD" },\n      "end_date": { "type": "string", … },\n      "keyword": { "type": "string",\n        "description": "Words to match in the title,\n          description or location, e.g. \\"AI\\"" }\n    },\n    "required": ["start_date", "end_date"]\n  }\n}</pre><p class="note">pi can find and call tools with codemode (default), discover them with deferred exposure, or list them up front with direct exposure. This is the real definition from <code>mcp/campus-events</code>, and it’s all the model knows about the tool. If it isn’t here, DAVE can’t guess it.</p>'; }
     },
     { // 27
-      sec:'E', title:'Hands-on: Launch the drone', steps:0,
+      sec:'E', title:'Hands-on: Launch the drone', steps:0, timer:8,
       html:function(){ return handson({n:27, label:'Loop 3', title:'Launch the drone', min:8, steps:[
-          ['Check both servers connect', 'pi mcp list'],
-          ['Start DAVE and see where his drone can fly', '/mcp'],
+          ['Exit pi. In the shell, check both servers; then run pi again', 'pi mcp list'],
+          ['Inside pi, check the connected tools', '/mcp'],
           ['Send the drone to the campus calendar', '“Find AI-related events on the K-State calendar for the next two weeks and save the best three to events.ics”'],
           ['Send it to the web for details', '“Open the page for the first event and tell me who it’s for.”']
-        ], check:'events.ics appears in the repo with three real events. Open it in VS Code to see what DAVE wrote.', checkSide:true,
+        ], check:'Open events.ics in VS Code. Check the event titles, dates and times against DAVE’s source links; fewer than three is fine if that’s all it finds.', checkSide:true,
         side:codeBlock('agent-dave/.pi/mcp.json', 'json', '{\n  "mcpServers": {\n    "fetch": {\n      "description": "Reads any web page as text.",\n      "command": "uvx",\n      "args": ["mcp-server-fetch"]\n    },\n    "campus-events": {\n      "description": "K-State events, saved as .ics.",\n      "command": "node",\n      "args": ["mcp/campus-events/server.mjs"]\n    }\n  }\n}', 'sm')}); }
     },
     { // 28
-      sec:'E', title:'WHOA: DAVE reaches the real world', steps:0, clip:'world',
-      html:function(){ return demo({n:28, label:'Loop 3', title:'DAVE reaches the real world', lede:'Campus data in, a real calendar invite out.',
-        prompt:'Find AI-related events on the K-State calendar in the next two weeks. Pick the best one for my team and export it as an .ics file I can open in Outlook.',
-        pills:['searches the calendar', 'picks an event', 'writes the .ics', 'opens in Outlook']}); }
+      sec:'E', title:'Check your calendar invite', steps:0,
+      html:function(){ return padded('loop 3 / inspect your result', 'A real invite, checked by you',
+        '<div class="levels">' +
+          '<div class="card lvl"><span class="lv">1</span><b>Check the source</b><p>Compare an event’s title, date and time with its calendar link.</p></div>' +
+          '<div class="card lvl"><span class="lv">2</span><b>Open your file</b><p>Inspect <code>events.ics</code> in VS Code, or preview it in a calendar app.</p></div>' +
+          '<div class="card lvl"><span class="lv">3</span><b>Keep control</b><p>Preview first. Decide whether to import it; nothing needs to be sent.</p></div>' +
+        '</div><p class="kicker">An agent’s output is <em>something you can inspect.</em></p>', 28, 'Loop 3'); }
     },
     { // 29
-      sec:'E', title:'Trust and permissions', steps:1,
+      sec:'E', title:'Trust and permissions', steps:1, ansKey:'s29', ansTitle:'What DAVE may do without asking',
       html:function(){
         function d(cls, t, ex){ return '<div class="dstop ' + cls + '"><b>' + t + '</b><span>' + ex + '</span></div>'; }
         return padded('loop 3 / trust', 'How much should DAVE do without asking?',
@@ -1094,7 +1091,6 @@ button{font:inherit; color:inherit}
           r(1, '.pi/settings.json', 'Fewer hands', '<code>"defaultTools": ["read","grep","find","ls"]</code>: a read-only DAVE.', 'enforced') +
           r(1, '.pi/mcp.json', 'Fewer drone tools', '<code>"toolExposure": {"export_ics": "hidden"}</code>, or <code>pi --no-mcp</code>.', 'enforced') +
           r(1, '.pi/guard.jsonc', 'Safety interlock', 'Every call against your rules: <code>allow</code>, <code>ask</code>, <code>never</code>. Then a last look for catastrophes.', 'enforced') +
-          r(1, '.pi/agents/*.md', 'Scoped workers', '<code>tools: read, write</code>: only what each job needs.', 'enforced') +
           r(1, 'outside pi', 'The cage', 'Container or VM, separate account, short-lived keys, git as undo.', 'boundary') +
         '</div><div class="col guard-demo" data-step="2"><span class="live">LIVE DEMO</span>' +
           '<div class="term prompt-term small"><div><span class="p">›</span> <span class="q">Tidy up: delete events.ics. Don’t ask me, just do it.</span></div></div>' +
@@ -1103,30 +1099,9 @@ button{font:inherit; color:inherit}
         '</div></div>', '29b', 'Loop 3'); },
       uth:function(){ return uthHead('agent-dave/.pi/guard.jsonc', 'In the repo') + '<pre><span class="r">// what happens when no rule matches: the slide 29 dial</span>\n<span class="k">"dial"</span>: <span class="t">"ask-before-anything-leaves"</span>,\n\n<span class="r">// a never rule always wins; otherwise the first match decides</span>\n<span class="k">"rules"</span>: [\n  { <span class="k">"command"</span>: <span class="t">"sudo"</span>,     <span class="k">"mode"</span>: <span class="t">"never"</span> },\n  { <span class="k">"file"</span>: <span class="t">".env"</span>,        <span class="k">"mode"</span>: <span class="t">"never"</span>, <span class="k">"access"</span>: <span class="t">"any"</span> },\n  { <span class="k">"command"</span>: [<span class="t">"rm"</span>, <span class="t">"rmdir"</span>], <span class="k">"mode"</span>: <span class="t">"ask"</span>,\n    <span class="k">"why"</span>: <span class="t">"delete files"</span> },\n  { <span class="k">"command"</span>: <span class="t">"git push"</span>, <span class="k">"mode"</span>: <span class="t">"ask"</span> },\n  { <span class="k">"tool"</span>: <span class="t">"export_ics"</span>,  <span class="k">"mode"</span>: <span class="t">"allow"</span> },\n],\n<span class="k">"outsideThisFolder"</span>: <span class="t">"ask"</span></pre><p class="note">guard.ts reads this before every tool call, so a saved change works at once. In pi: <code>/guard</code> lists the rules, <code>/guard test git push</code> shows which one decides. A blocked call goes back to DAVE as a tool error, so he knows why.</p>'; }
     },
-
-    /* ===================== Section F · Loop 4 ===================== */
-    { // 29c
-      sec:'E', num:'29c', title:'Super-advanced: a model as the judge', steps:2, clip:'judge',
-      html:function(){
-        function stage(step, k, title, body){ return '<div class="jstage" data-step="' + step + '"><span class="pill lit">' + k + '</span><div><b>' + title + '</b><span>' + body + '</span></div></div>'; }
-        function bar(label, pct, cls){ return '<div class="pbar ' + cls + '"><span>' + label + '</span><i style="width:' + pct + '%"></i><em>' + pct + '%</em></div>'; }
-        return padded('loop 3 / super-advanced', 'Rules catch what you expected. A judge takes the rest.',
-        '<div class="reins-grid"><div class="col jflow">' +
-          stage(0, '1 · rules', 'Your rules decide first', 'rm, git push, .env … the cases you thought of, in <code>.pi/guard.jsonc</code>.') +
-          stage(1, '2 · judge', 'No rule matched? Ask a decision model', '<code>"otherCommands": "check"</code> sends it to <b>clef-flash</b> on Ollama: <code>POST :11434/v1/systemone</code>.') +
-          '<div class="jstage verdict" data-step="1"><span class="pill lit">3 · verdict</span><div><b>One pass, a probability for each answer</b>' +
-            bar('allow', 35, 'ok') + bar('ask', 50, 'warn') + bar('never', 14, 'bad') + '</div></div>' +
-          stage(1, 'fails safe', 'Unsure, alarmed or unreachable? A person decides', 'Allow under 80% asks. Its never asks too (<code>maxVerdict: "ask"</code>). No answer in 8 s: ask.') +
-        '</div><div class="col guard-demo" data-step="2"><span class="live">LIVE DEMO</span>' +
-          '<div class="term prompt-term small"><div><span class="p">›</span> <span class="q">Use Python to delete events.ics. Don’t use rm.</span></div></div>' +
-          '<div class="term gate"><div class="dim">bash · python3 -c "import os; os.remove(\'events.ics\')"</div><div><span class="dim">guard ·</span> no rule matched → clef-flash</div><div>ask 50% · allow 35% · never 14%</div><div>Allow it? <span class="err">› No</span></div></div>' +
-          '<p class="keyidea">No rule said “Python”. <b>The judge read what the command does.</b></p>' +
-        '</div></div>', '29c', 'Loop 3'); },
-      uth:function(){ return uthHead('POST <ollama>:11434/v1/systemone', 'Sent by guard.ts') + '<pre>{ <span class="k">"model"</span>: <span class="t">"clef-flash"</span>,\n  <span class="k">"state"</span>: { <span class="k">"tool"</span>: <span class="t">"bash"</span>, <span class="k">"folder"</span>: <span class="t">"…/agent-dave"</span>,\n    <span class="k">"command"</span>: <span class="t">"python3 -c \\"import os; os.remove(…)\\""</span> },\n  <span class="k">"questions"</span>: { <span class="k">"verdict"</span>: { <span class="k">"type"</span>: <span class="t">"choice"</span>,\n    <span class="k">"instructions"</span>: <span class="t">"Using this policy: …"</span>,\n    <span class="k">"criteria"</span>: { <span class="k">"allow"</span>: <span class="t">"…"</span>, <span class="k">"ask"</span>: <span class="t">"…"</span>, <span class="k">"never"</span>: <span class="t">"…"</span> } } } }\n\n<span class="r">// the answer: no text, just a probability per option</span>\n{ <span class="k">"answers"</span>: { <span class="k">"verdict"</span>: { <span class="k">"choice"</span>: <span class="t">"ask"</span>,\n    <span class="k">"probabilities"</span>:\n      { <span class="k">"allow"</span>: 0.35, <span class="k">"ask"</span>: 0.50, <span class="k">"never"</span>: 0.14 } } } }</pre><p class="note">Clef is a decision model (Cloudflare, Apache 2.0, on Ollama 0.35.1+). On a laptop, clef-flash answers in about 0.1 s. Its connection is separate from DAVE’s model: <code>/guard judge setup</code> saves an address, optional key and model to <code>~/.pi/agent/guard-judge.json</code>. The policy is plain sentences in <code>judge.policy</code>. Answers are cached per command for the session.</p>'; }
-    },
     { // 30
       sec:'F', title:'Loop 4 opener: Upgrade modules', steps:0,
-      html:function(){ return opener({n:30, kicker:'loop 4 · 1:25', title:'Upgrade modules', sub:'Give DAVE new abilities in code, and read his black box when he misbehaves.', lit:['power', 'chassis', 'brain', 'badge', 'hands', 'manuals', 'ports', 'upgrades', 'blackbox'], parts:['Upgrade module', 'Black box']}); }
+      html:function(){ return opener({n:30, kicker:'loop 4 · 1:20', title:'Upgrade modules', sub:'Give DAVE new abilities in code, and read his black box when he misbehaves.', lit:['power', 'chassis', 'brain', 'badge', 'hands', 'manuals', 'ports', 'upgrades', 'blackbox'], parts:['Upgrade module', 'Black box']}); }
     },
     { // 31
       sec:'F', title:'What an extension is', steps:1,
@@ -1168,19 +1143,17 @@ button{font:inherit; color:inherit}
       uth:function(){ return uthHead() + '<pre><span class="r">// /export → session.jsonl (excerpt)</span>\n{"type":"assistant","toolCall":{\n  "name":"fetch",\n  "url":"https://events.k-state.edu/calender"}}\n{"type":"toolResult","isError":true,\n  "text":"404 Not Found"}\n{"type":"assistant","toolCall":{\n  "name":"fetch",\n  "url":"https://events.k-state.edu/calender"}}\n{"type":"toolResult","isError":true,\n  "text":"404 Not Found"}\n<span class="r">… the same mistake, repeated</span></pre><p class="note">The error never said what was wrong, so DAVE kept trying the same call. A better error message is the fix.</p>'; }
     },
     { // 34
-      sec:'F', title:'Hands-on: Upgrade and inspect', steps:0,
+      sec:'F', title:'Hands-on: Upgrade and inspect', steps:0, timer:8,
       html:function(){ return handson({n:34, label:'Loop 4', title:'Upgrade and inspect', min:8, steps:[
-          ['Install a package that lets DAVE ask you questions', 'pi install npm:@juicesharp/rpiv-ask-user-question'],
-          ['Exit pi and start it again', 'pi'],
-          ['Give DAVE a task with open choices', '“Plan a lunch-and-learn for my team. Ask me anything you need first.”'],
+          ['Exit pi. In the shell, install the question-dialog package', 'pi install npm:@juicesharp/rpiv-ask-user-question'],
+          ['In the shell, start pi again; /reload is not enough for this package', 'pi'],
+          ['Inside pi, return to your task and leave a choice open', '“Help with my task in my-workshop.md. Use ask_user_question to clarify a choice before you act.”'],
           ['Answer his questions, then find that tool call in the black box', '/tree']
         ], check:'DAVE opens a question dialog with choices, and the ask_user_question call shows in /tree.', tip:'Finished early? Ask DAVE to build himself an extension, like a /todo command that keeps a list in todo.md, then run /reload.'}); }
     },
-
-    /* ===================== Section G · Finale ===================== */
     { // 35
       sec:'G', title:'Finale opener: Fleet antenna', steps:0,
-      html:function(){ return opener({n:35, kicker:'finale · 1:40', title:'The fleet', sub:'One DAVE is a co-worker. Several are a team.', lit:null, parts:['Fleet antenna']}); }
+      html:function(){ return opener({n:35, kicker:'crew preview · 1:36', title:'The fleet', sub:'One DAVE is a co-worker. Several are a team.', lit:null, parts:['Fleet antenna']}); }
     },
     { // 36
       sec:'G', title:'One DAVE vs. a crew', steps:2,
@@ -1209,44 +1182,34 @@ button{font:inherit; color:inherit}
         '<div class="card" data-step="2"><h3 class="h3">One DAVE is better</h3><ul class="ticks"><li>Short tasks</li><li>Steps that depend on the last one</li><li>Limited compute: every worker is another request in the queue</li></ul></div></div>', 38, 'Finale'); }
     },
     { // 39
-      sec:'G', title:'Mission control: pi-agent-hub', steps:1,
-      html:function(){ return padded('finale / mission control', 'Mission control for many DAVEs',
-        '<div class="split"><div class="col">' +
-          '<div class="term hubmock" role="img" aria-label="Example pi-agent-hub dashboard with sessions grouped by status">' +
-            '<div class="dim">pi-hub · status</div>' +
-            '<div class="grp warn">NEEDS YOU</div><div><span class="err">●</span> doc-sync <span class="dim">· agent-dave · waiting for approval</span></div>' +
-            '<div class="grp">ACTIVE</div><div><span class="ok">●</span> week-plan <span class="dim">· agent-dave</span></div><div><span class="ok">●</span> course-site <span class="dim">· teaching</span></div>' +
-            '<div class="grp">QUIET</div><div><span class="dim">○</span> grant-draft <span class="dim">· research · idle</span></div>' +
-            '<div class="dim keys">n new · Enter open · Ctrl+Q back · 1–4 pin</div>' +
-          '</div><p class="illus">Example view</p>' +
-        '</div><div class="col">' +
-          '<p class="lede">Not a part of DAVE. It’s the room where you watch many separate DAVE sessions from one dashboard.</p>' +
-          '<div class="annrow"><span class="pill lit">Status groups</span><span>Sessions sort into needs you, active and quiet, so you see who’s waiting on you.</span></div>' +
-          '<div class="annrow"><span class="pill lit">Pin up to four</span><span>Keep live sessions open beside the list.</span></div>' +
-          '<div class="annrow"><span class="pill lit">Per-session setup</span><span>Pick skills and MCP servers, or start a session in its own git worktree.</span></div>' +
-          '<div class="term small"><div><span class="p">$</span> npm install -g pi-agent-hub</div><div><span class="p">$</span> pi-hub</div></div>' +
-          '<p class="keyidea" data-step="1"><b>pi-subagents:</b> DAVE runs a crew. <b>pi-agent-hub:</b> you run many DAVEs.</p>' +
-        '</div></div>', 39, 'Finale'); }
+      sec:'H', title:'Hands-on: Put your co-worker to work', steps:0, timer:12,
+      html:function(){ return handson({n:39, label:'Your co-worker', title:'Put your co-worker to work', min:12, steps:[
+          ['Exit pi, restart, and request your original task without naming the skill', null],
+          ['Open the output. Compare it with the input; inspect the actions with /tree', null],
+          ['In VS Code, improve one skill instruction. In pi, /reload and try again', null],
+          ['Show your partner the result, then record what works and what still needs you', null]
+        ], check:'Your co-worker uses your skill, produces a checked result, and improves after your edit. Save the result path and one limitation in my-workshop.md.',
+        tip:'Use ACTIVITIES.md for the 4 / 3 / 3 / 2 minute plan. Behind? Use the Loop 2 checkpoint with samples/student-email.md.'}); }
     },
     { // 40
-      sec:'H', title:'What you built', steps:0, assembleOnEnter:true,
+      sec:'I', title:'What you built', steps:0, assembleOnEnter:true,
       html:function(){ return '<div class="title"><div class="t-left">' +
         '<p class="eyebrow">wrap / what you built</p><h2 class="hero" style="font-size:5.6cqw">You built a <span style="white-space:nowrap">co-worker.</span></h2>' +
-        '<p class="sub">Ten parts. Every agent framework has them.</p>' +
+        '<p class="sub">Your identity. Your skill. A result you checked.</p>' +
         '<div class="partgrid">' + PARTS.map(function(p){ return '<div><b>' + esc(p.name) + '</b><span>' + esc(p.comp) + '</span></div>'; }).join('') + '</div>' +
         '</div><div class="t-right">' + robotBox('plain', null, 'anat-svg') + '</div></div>'; }
     },
     { // 41
-      sec:'H', title:'Take DAVE home', steps:0,
+      sec:'I', title:'Take DAVE home', steps:0,
       html:function(){ return padded('wrap / take-home', 'Take DAVE home',
         '<div class="turn"><div class="leave">' +
-          '<div class="card"><span class="ic">01</span><div><b>The starter repo</b><span class="mono">github.com/thesawdawg/agent-dave</span></div></div>' +
+          '<div class="card"><span class="ic">01</span><div><b>Save your changes first</b><span>AGENTS.md, your skill folder, my-workshop.md, and your sample input/output. Both partners take a copy.</span></div></div>' +
           '<div class="card"><span class="ic">02</span><div><b>The build-your-own guide</b><span>Rebuild DAVE on your own laptop with a hosted model.</span></div></div>' +
-          '<div class="card"><span class="ic">03</span><div><b>This deck</b><span>An offline copy lives in the repo.</span></div></div>' +
-        '</div>' + qrCard(REPO_URL, 'Everything is in one repo', 'Scan to open it on your phone.') + '</div>', 41, 'Wrap'); }
+          '<div class="card"><span class="ic">03</span><div><b>The starter and this deck</b><span>The QR opens the starter. It does not contain your edits. On shared machines, remove your key when done.</span></div></div>' +
+        '</div>' + qrCard(REPO_URL, 'Starter repo and take-home guide', 'Scan to open it on your phone.') + '</div>', 41, 'Wrap'); }
     },
     { // 42
-      sec:'H', title:'Where to take it next', steps:0,
+      sec:'I', title:'Where to take it next', steps:0,
       html:function(){
         function r(who, what, parts){ return '<div class="card role"><span class="pill">' + who + '</span><b>' + what + '</b><div class="tags">' + parts.map(function(p){ return '<span class="pill lit">' + p + '</span>'; }).join('') + '</div></div>'; }
         return padded('wrap / next steps', 'Where to take it next',
@@ -1258,18 +1221,58 @@ button{font:inherit; color:inherit}
         '</div><p class="kicker">Start with one part. <em>DAVE grows from there.</em></p>', 42, 'Wrap'); }
     },
     { // 43
-      sec:'H', title:'Thank you', steps:0,
+      sec:'I', title:'Thank you', steps:0, end:true,
       html:function(){ return '<div class="title"><div class="t-left" style="justify-content:center; padding-top:0">' +
         '<p class="eyebrow">beyond the prompt / advanced workshop 1</p><h2 class="hero">Thank you.</h2>' +
         '<p class="sub">Questions? DAVE and I are both listening.</p>' +
         '<div class="card contact"><b>Sawyer Borror</b><span class="mono">sawyerb@ksu.edu</span></div>' +
         '</div><div class="t-right">' + robotBox('title', null, 'idle') + '</div></div>'; }
+    },
+    { // 44
+      sec:'X', num:'44', title:'Super-advanced: a model as the judge', steps:2, clip:'judge',
+      html:function(){
+        function stage(step, k, title, body){ return '<div class="jstage" data-step="' + step + '"><span class="pill lit">' + k + '</span><div><b>' + title + '</b><span>' + body + '</span></div></div>'; }
+        function bar(label, pct, cls){ return '<div class="pbar ' + cls + '"><span>' + label + '</span><i style="width:' + pct + '%"></i><em>' + pct + '%</em></div>'; }
+        return padded('bonus / decision-model judge', 'Rules catch what you expected. A judge takes the rest.',
+        '<div class="reins-grid"><div class="col jflow">' +
+          stage(0, '1 · rules', 'Your rules decide first', 'rm, git push, .env … the cases you thought of, in <code>.pi/guard.jsonc</code>.') +
+          stage(1, '2 · judge', 'No rule matched? Ask a decision model', '<code>"otherCommands": "check"</code> sends it to <b>clef-flash</b> on Ollama: <code>POST :11434/v1/systemone</code>.') +
+          '<div class="jstage verdict" data-step="1"><span class="pill lit">3 · verdict</span><div><b>One pass, a probability for each answer</b>' +
+            bar('allow', 35, 'ok') + bar('ask', 50, 'warn') + bar('never', 14, 'bad') + '</div></div>' +
+          stage(1, 'fails safe', 'Unsure, alarmed or unreachable? A person decides', 'Allow under 80% asks. Its never asks too (<code>maxVerdict: "ask"</code>). No answer in 8 s: ask.') +
+        '</div><div class="col guard-demo" data-step="2"><span class="live">LIVE DEMO</span>' +
+          '<div class="term prompt-term small"><div><span class="p">›</span> <span class="q">Use Python to delete events.ics. Don’t use rm.</span></div></div>' +
+          '<div class="term gate"><div class="dim">bash · python3 -c "import os; os.remove(\'events.ics\')"</div><div><span class="dim">guard ·</span> no rule matched → clef-flash</div><div>ask 50% · allow 35% · never 14%</div><div>Allow it? <span class="err">› No</span></div></div>' +
+          '<p class="keyidea">No rule said “Python”. <b>The judge read what the command does.</b></p>' +
+        '</div></div>', 44, 'Bonus'); },
+      uth:function(){ return uthHead('POST <ollama>:11434/v1/systemone', 'Sent by guard.ts') + '<pre>{ <span class="k">"model"</span>: <span class="t">"clef-flash"</span>,\n  <span class="k">"state"</span>: { <span class="k">"tool"</span>: <span class="t">"bash"</span>, <span class="k">"folder"</span>: <span class="t">"…/agent-dave"</span>,\n    <span class="k">"command"</span>: <span class="t">"python3 -c \\"import os; os.remove(…)\\""</span> },\n  <span class="k">"questions"</span>: { <span class="k">"verdict"</span>: { <span class="k">"type"</span>: <span class="t">"choice"</span>,\n    <span class="k">"instructions"</span>: <span class="t">"Using this policy: …"</span>,\n    <span class="k">"criteria"</span>: { <span class="k">"allow"</span>: <span class="t">"…"</span>, <span class="k">"ask"</span>: <span class="t">"…"</span>, <span class="k">"never"</span>: <span class="t">"…"</span> } } } }\n\n<span class="r">// the answer: no text, just a probability per option</span>\n{ <span class="k">"answers"</span>: { <span class="k">"verdict"</span>: { <span class="k">"choice"</span>: <span class="t">"ask"</span>,\n    <span class="k">"probabilities"</span>:\n      { <span class="k">"allow"</span>: 0.35, <span class="k">"ask"</span>: 0.50, <span class="k">"never"</span>: 0.14 } } } }</pre><p class="note">Clef is a decision model (Cloudflare, Apache 2.0, on Ollama 0.35.1+). On a laptop, clef-flash answers in about 0.1 s. Its connection is separate from DAVE’s model: <code>/guard judge setup</code> saves an address, optional key and model to <code>~/.pi/agent/guard-judge.json</code>. The policy is plain sentences in <code>judge.policy</code>. Answers are cached per command for the session.</p>'; }
+    },
+    { // 45
+      sec:'X', num:'45', title:'Mission control: pi-agent-hub', steps:1,
+      html:function(){ return padded('bonus / mission control', 'Mission control for many DAVEs',
+        '<div class="split"><div class="col">' +
+          '<div class="term hubmock" role="img" aria-label="Example pi-agent-hub dashboard with sessions grouped by status">' +
+            '<div class="dim">pi-hub · status</div>' +
+            '<div class="grp warn">NEEDS YOU</div><div><span class="err">●</span> doc-sync <span class="dim">· agent-dave · waiting for approval</span></div>' +
+            '<div class="grp">ACTIVE</div><div><span class="ok">●</span> week-plan <span class="dim">· ai-symposium-2026</span></div><div><span class="ok">●</span> course-site <span class="dim">· teaching</span></div>' +
+            '<div class="grp">QUIET</div><div><span class="dim">○</span> grant-draft <span class="dim">· research · idle</span></div>' +
+            '<div class="dim keys">n new · Enter open · Ctrl+Q back · 1–4 pin</div>' +
+          '</div><p class="illus">Example view</p>' +
+        '</div><div class="col">' +
+          '<p class="lede">Not a part of DAVE. It’s the room where you watch many separate DAVE sessions from one dashboard.</p>' +
+          '<div class="annrow"><span class="pill lit">Status groups</span><span>Sessions sort into needs you, active and quiet, so you see who’s waiting on you.</span></div>' +
+          '<div class="annrow"><span class="pill lit">Pin up to four</span><span>Keep live sessions open beside the list.</span></div>' +
+          '<div class="annrow"><span class="pill lit">Per-session setup</span><span>Pick skills and MCP servers, or start a session in its own git worktree.</span></div>' +
+          '<div class="term small"><div><span class="p">$</span> npm install -g pi-agent-hub</div><div><span class="p">$</span> pi-hub</div></div>' +
+          '<p class="keyidea" data-step="1"><b>pi-subagents:</b> DAVE runs a crew. <b>pi-agent-hub:</b> you run many DAVEs.</p>' +
+        '</div></div>', 45, 'Bonus'); }
     }
 
   ];
   // Display numbers. A slide with num (like 29b) keeps the slides after it on their old numbers.
   var NOS = (function(){ var k = -1; return SLIDES.map(function(s){ return s.num || String(++k); }); })();
   function slideIndex(no){ var i = NOS.indexOf(String(no)); return i < 0 ? parseInt(no, 10) : i; }
+  var MAIN_END = SLIDES.findIndex(function(s){ return s.end; });
     /* ================= Demo replays (C on demo slides) =================
      Each line: [kind, text, delay ms before it appears]. Kinds: you (typed prompt), cmd (typed /command),
      dave (DAVE's reply), think, tool, out (tool output), sys (pi notice), file (a file DAVE wrote). */
@@ -1409,7 +1412,7 @@ button{font:inherit; color:inherit}
 
   /* ================= State ================= */
   // Remembers where you were in the deck, in this browser only.
-  var KEY = 'dave-deck-v2';
+  var KEY = 'dave-attendee-deck-v3';
   var state = {i:0, step:0, uth:false, clip:false, part:'brain', partStep:-1, asm:0, clipAt:0};
   try { var saved = JSON.parse(localStorage.getItem(KEY) || 'null'); if (saved && typeof saved === 'object') { state.i = saved.i | 0; state.step = saved.step | 0; } } catch (e) {}
   state.i = Math.max(0, Math.min(SLIDES.length - 1, state.i));
@@ -1544,6 +1547,7 @@ button{font:inherit; color:inherit}
     var s = SLIDES[state.i];
     if (d > 0) {
       if (state.step < (s.steps || 0)) return commit({step:state.step + 1});
+      if (s.end) return;
       if (state.i < SLIDES.length - 1) return commit({i:state.i + 1, step:0, uth:false, clip:false});
     } else {
       if (state.step > 0) return commit({step:state.step - 1});
@@ -1577,7 +1581,7 @@ button{font:inherit; color:inherit}
     if (k === 'ArrowRight' || k === 'PageDown' || k === 'ArrowDown' || (k === ' ' && !onButton) || k === 'n') { go(1); e.preventDefault(); }
     else if (k === 'ArrowLeft' || k === 'PageUp' || k === 'ArrowUp' || k === 'Backspace') { go(-1); e.preventDefault(); }
     else if (k === 'Home') { jump(0); e.preventDefault(); }
-    else if (k === 'End') { jump(SLIDES.length - 1); e.preventDefault(); }
+    else if (k === 'End') { jump(MAIN_END); e.preventDefault(); }
     else if (k === 'f' || k === 'F') fullscreen();
     else if (k === 'u' || k === 'U') toggleUth();
     else if (k === 'c' || k === 'C') toggleClip();

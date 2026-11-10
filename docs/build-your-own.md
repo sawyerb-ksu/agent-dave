@@ -82,6 +82,8 @@ Something not working? See [TROUBLESHOOTING.md](../TROUBLESHOOTING.md).
 
 ## 4. Make DAVE yours
 
+**Bringing your workshop version home?** After setup, use VS Code and your file manager to restore your saved `AGENTS.md`, custom skill folder under `.pi/skills/`, `my-workshop.md`, and sample input/output to the same places in this repo. Start pi and request the task in your own words. Check the result against your source again; the starter download does not include the edits you made at the workshop.
+
 Rebuild him in the same order as the workshop, one part at a time:
 
 | Part | What to change | File |
